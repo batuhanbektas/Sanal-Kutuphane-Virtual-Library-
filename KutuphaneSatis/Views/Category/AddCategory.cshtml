@@ -1,0 +1,37 @@
+﻿@model KutuphaneSatis.DTOs.Request.CreateCategoryRequest
+
+@{
+    ViewData["Title"] = "Yeni Kategori Ekle";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Yeni Kategori Ekle</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/api/Category/AddCategory" method="post">
+                        
+                        <div class="mb-3">
+                            <label for="CatName" class="form-label">Kategori Adı</label>
+                            <input type="text" class="form-control" id="CatName" name="CatName" placeholder="Örn: Bilim Kurgu, Felsefe" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Açıklama</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="Kategori hakkında kısa bir açıklama giriniz..." required></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/api/Book/AddBook" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-success">Kategoriyi Kaydet</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

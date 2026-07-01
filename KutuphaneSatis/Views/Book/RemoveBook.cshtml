@@ -1,0 +1,51 @@
+﻿@model List<KutuphaneSatis.DTOs.Response.BookListItemResponse>
+
+<h2>Sanal Kütüphane - Kitap Silme Paneli</h2>
+<hr />
+
+<a href="/api/Book/GetCatalog" class="btn btn-secondary mb-3">Kataloğa Geri Dön</a>
+
+<table class="table border table-hover">
+    <thead>
+        <tr>
+            <th>Kitap Adı</th>
+            <th>Fiyat</th>
+            <th>Stok Adedi</th>
+            <th>Kategori</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td class="align-middle">@book.Name</td>
+                    <td class="align-middle">@book.Price ₺</td>
+                    <td class="align-middle">@book.Stock</td>
+                    <td class="align-middle">@book.CatName</td>
+                    <td class="align-middle">
+                        
+                        <form method="post" action="/api/Book/RemoveBook">
+                            
+                            <input type="hidden" name="bookId" value="@book.BookId" />
+                            
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('@book.Name adlı kitabı veritabanından tamamen silmek istediğinize emin misiniz?');">
+                                Sil
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted">Şu an sistemde silinecek kayıtlı kitap bulunmuyor.</td>
+            </tr>
+        }
+    </tbody>
+</table>

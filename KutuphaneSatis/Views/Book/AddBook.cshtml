@@ -1,0 +1,79 @@
+﻿@model KutuphaneSatis.DTOs.Request.CreateBookRequest
+
+@{
+    ViewData["Title"] = "Yeni Kitap Ekle";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Yeni Kitap Ekle</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/api/Book/AddBook" method="post">
+                        
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Kitap Adı</label>
+                            <input type="text" class="form-control" id="Name" name="Name" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="AuthorName" class="form-label">Yazar Adı</label>
+                            <input type="text" class="form-control" id="AuthorName" name="AuthorName" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="CatName" class="form-label">Kategori Seçiniz</label>
+                            <div class="input-group">
+                                <select class="form-select" id="CatName" name="CatName" required>
+                                    <option value="">Lütfen bir kategori seçin...</option>
+            
+                                    @if (ViewBag.Categories != null)
+                                    {
+                                        foreach (var category in ViewBag.Categories)
+                                        {
+                                            <option value="@category.Name">@category.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <a href="/api/Category/AddCategory" class="btn btn-outline-primary" title="Yeni Kategori Ekle">
+                                    Kategoriler
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="PageNumber" class="form-label">Sayfa Sayısı</label>
+                                <input type="number" class="form-control" id="PageNumber" name="PageNumber" min="0" value="0" required />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="Stock" class="form-label">Stok Adedi</label>
+                                <input type="number" class="form-control" id="Stock" name="Stock" min="0" value="0" required />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="Price" class="form-label">Fiyat (TL)</label>
+                                <input type="number" class="form-control" id="Price" name="Price" step="0.01" min="0" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Açıklama</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/api/Book/GetCatalog" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-success">Kitabı Kaydet</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
