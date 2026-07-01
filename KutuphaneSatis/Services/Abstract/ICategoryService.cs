@@ -9,5 +9,6 @@ namespace KutuphaneSatis.Services.Abstract
 
         public void AddCategory(CreateCategoryRequest categoryRequest);
 
+        public void RemoveCategory(int id);
     }
 }

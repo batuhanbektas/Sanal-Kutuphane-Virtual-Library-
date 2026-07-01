@@ -19,8 +19,8 @@ namespace KutuphaneSatis.Controllers
         
         }
 
-        [HttpGet("AddCategory")]
-        public IActionResult AddCategory()
+        [HttpGet("ManageCategory")]
+        public IActionResult ManageCategory()
         {
             var categories = _categoryService.GetAllCategories();
             ViewBag.Categories = categories;
@@ -34,6 +34,15 @@ namespace KutuphaneSatis.Controllers
 
             // DİKKAT: RedirectToAction değil, sadece Redirect kullanıyoruz!
             return Redirect("/api/Book/GetCatalog");
+        }
+
+        [HttpPost("RemoveCategory")]
+        public IActionResult RemoveCategory([FromForm] int id)
+        {
+            _categoryService.RemoveCategory(id);
+
+            // Yönlendirme adresini API yapına uygun şekilde tam yol olarak belirtelim
+            return Redirect("/api/Category/ManageCategory");
         }
 
 

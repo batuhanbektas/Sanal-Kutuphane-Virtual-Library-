@@ -24,7 +24,10 @@ namespace KutuphaneSatis.Services.Concrete
             return categories.Select(c => new CategoryListItemResponse
             {
 
-                Name = c.Name
+                Name = c.Name,
+                Id = c.Id,
+                Description = c.Description,
+                
             }).ToList();
         }
 

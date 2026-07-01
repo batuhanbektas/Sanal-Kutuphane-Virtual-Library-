@@ -1,0 +1,77 @@
+﻿@model KutuphaneSatis.DTOs.Request.CreateCategoryRequest
+
+@{
+    ViewData["Title"] = "Kategori Yönetimi";
+}
+
+<div class="container mt-5">
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Yeni Kategori Ekle</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/api/Category/AddCategory" method="post">
+                        
+                        <div class="mb-3">
+                            <label for="CatName" class="form-label">Kategori Adı</label>
+                            <input type="text" class="form-control" id="CatName" name="CatName" placeholder="Örn: Bilim Kurgu, Felsefe" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Açıklama</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="Kategori hakkında kısa bir açıklama giriniz..." required></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/api/Book/GetCatalog" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-success">Kategoriyi Kaydet</button>
+                        </div>
+                        
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h5 class="mb-3">Mevcut Kategoriler</h5>
+            <table class="table border table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kategori Adı</th>
+                        <th>Kategori Açıklaması</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Categories != null)
+                    {
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <tr>
+                                <td>@category.Name</td>
+                                <td>@category.Description</td>
+                                <td>
+                                    <form method="post" action="/api/Category/RemoveCategory" style="display:inline;">
+                                        <input type="hidden" name="id" value="@category.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">Kayıtlı kategori bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
