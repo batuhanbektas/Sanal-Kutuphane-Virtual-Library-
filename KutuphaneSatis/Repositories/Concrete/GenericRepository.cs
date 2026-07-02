@@ -42,7 +42,7 @@ namespace KutuphaneSatis.Repositories.Abstract
 
             if (entityToDelete != null) 
             {
-                _dbSet.Remove(entityToDelete);
+                entityToDelete.isDeleted = true;
                 _context.SaveChanges();
    
             

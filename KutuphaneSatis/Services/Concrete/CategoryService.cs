@@ -19,11 +19,12 @@ namespace KutuphaneSatis.Services.Concrete
         }
         public List<CategoryListItemResponse> GetAllCategories()
         {
-            var categories = _categoryRepository.GetAll(); // Generic GetAll()
+            // Parametre ismini 'category' olarak değiştirmek okunabilirliği artırır
+            var categories = _categoryRepository.GetAll()
+                                                .Where(category => !category.isDeleted) ;
 
             return categories.Select(c => new CategoryListItemResponse
             {
-
                 Name = c.Name,
                 Id = c.Id,
                 Description = c.Description,

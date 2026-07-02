@@ -13,28 +13,35 @@ namespace KutuphaneSatis.Services.Concrete
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
-        private readonly ICategoryRepository _categoryRepistory;
+        private readonly ICategoryRepository _categoryRepository;
 
         public BookService(IBookRepository bookRepository, ICategoryRepository categoryRepository)
         {
 
             _bookRepository = bookRepository;
-            _categoryRepistory = categoryRepository;
+            _categoryRepository = categoryRepository;
 
         }
         public List<BookListItemResponse> GetBookList()
         {
             var books = _bookRepository.GetBooksWithCategories();
 
-            var ResponseList = books.Select(book => new BookListItemResponse
+            var ResponseList = books
+                .Where(book => !book.isDeleted)
+                .Select(book => new BookListItemResponse
             {
                 BookId = book.Id,
                 Name = book.Name,
                 Price = book.Price,
                 Stock = book.Stock,
 
-                CatName = book.Category.Name
-            }).ToList();
+
+                    // "Eğer book.Category null değilse adını al, null ise boşluk döndür"
+                CatName = (!book.Category.isDeleted) ? book.Category.Name : " "
+                
+
+
+                }).ToList();
 
             return ResponseList;
         }
@@ -56,7 +63,8 @@ namespace KutuphaneSatis.Services.Concrete
                 Stock = bookEntity.Stock,
                 PageNumber = bookEntity.PageNumber,
                 Price = bookEntity.Price,
-                CatName = bookEntity.Category.Name
+                // "Eğer book.Category null değilse adını al, null ise boşluk döndür"
+                CatName = (!bookEntity.Category.isDeleted) ? bookEntity.Category.Name : " "
 
 
             };
@@ -69,22 +77,30 @@ namespace KutuphaneSatis.Services.Concrete
 
             var books = _bookRepository.GetBooksByCategory(categoryId);
 
-            var ResponseList = books.Select(book => new BookListItemResponse
+            var ResponseList = books
+                .Where(book => !book.isDeleted)
+                .Select(book => new BookListItemResponse
             {
                 BookId = book.Id,
                 Name = book.Name,
                 Price = book.Price,
                 Stock = book.Stock,
 
-                CatName = book.Category.Name
-            }).ToList();
+                 CatName = (!book.Category.isDeleted) ? book.Category.Name : " "
+                }).ToList();
 
             return ResponseList;
         }
 
         public void AddBook(CreateBookRequest createBook)
         {
-            var category = _categoryRepistory.GetAll();
+        
+            var category = _categoryRepository.GetAll().FirstOrDefault(c => c.Id == createBook.i);
+
+            if (category == null)
+            {
+                throw new Exception("Belirtilen kategori bulunamadı veya silinmiş.");
+            }
 
             Book book = new Book()
             {
@@ -94,7 +110,8 @@ namespace KutuphaneSatis.Services.Concrete
                 PageNumber = createBook.PageNumber,
                 Price = createBook.Price,
                 Stock = createBook.Stock,
-                Category = category.FirstOrDefault(category => category.Name == createBook.CatName)
+                Category = category, // Bulduğumuz geçerli kategoriyi atıyoruz
+                CategoryID = category.Id // İlişkisel veritabanı kuralları gereği ID'yi de eşle
             };
 
             _bookRepository.Create(book);

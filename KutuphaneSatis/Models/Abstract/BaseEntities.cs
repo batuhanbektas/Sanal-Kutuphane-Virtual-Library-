@@ -5,7 +5,7 @@
 
         public int Id { get; set; }
 
-        //public bool isDeleted { get; set; }
+        public bool isDeleted { get; set; } = false;
 
     }
 }
