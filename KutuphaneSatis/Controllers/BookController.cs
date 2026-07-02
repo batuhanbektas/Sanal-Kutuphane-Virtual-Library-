@@ -57,8 +57,8 @@ namespace KutuphaneSatis.Controllers
                  }
                 else
                 {
-                    return Ok(bookDetail);
-                }
+                return View(bookDetail);
+            }
             
             }
 
@@ -108,9 +108,17 @@ namespace KutuphaneSatis.Controllers
             return RedirectToAction("GetCatalog");
         }
 
+
+        
+
+            
+        
+        
+        }
+
     } 
 
 
 
-    }
+    
 

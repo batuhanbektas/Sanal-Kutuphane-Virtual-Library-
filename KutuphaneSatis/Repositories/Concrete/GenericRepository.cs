@@ -2,6 +2,8 @@
 using KutuphaneSatis.Models.Abstract;
 using KutuphaneSatis.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace KutuphaneSatis.Repositories.Abstract
 {
@@ -30,11 +32,25 @@ namespace KutuphaneSatis.Repositories.Abstract
 
 
         }
-        public T GetByID(int id)
+        // Metodumuza "includes" adında, istediğimiz kadar tabloyu ekleyebileceğimiz bir parametre ekliyoruz.
+        public T GetByID(int id, params Expression<Func<T, object>>[] includes)
         {
-            return _dbSet.Find(id);
+            // _dbSet'i hemen veritabanına göndermiyoruz, önce IQueryable (sorgu taslağı) olarak elimize alıyoruz.
+            IQueryable<T> query = _dbSet;
+
+            // Eğer Service katmanından buraya bir "Include" gönderilmişse, bunları sorguya ekle
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            // Sorguya eklentileri yaptıktan sonra, en son veritabanına gidip ID'ye göre olanı çekiyoruz.
+            return query.FirstOrDefault(x => x.Id == id);
         }
-        
+
 
         public void Delete(int id)
         {

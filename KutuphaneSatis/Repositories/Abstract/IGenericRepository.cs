@@ -1,4 +1,5 @@
 ﻿using KutuphaneSatis.Models.Abstract;
+using System.Linq.Expressions;
 
 namespace KutuphaneSatis.Repositories.Abstract
 {
@@ -8,7 +9,7 @@ namespace KutuphaneSatis.Repositories.Abstract
 
 
         public IEnumerable<T> GetAll();
-        public T GetByID(int id);
+        T GetByID(int id, params Expression<Func<T, object>>[] includes);
         public void Delete(int id);
         public void Create(T entity);
         public void Update(T entity);

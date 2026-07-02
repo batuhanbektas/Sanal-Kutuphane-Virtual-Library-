@@ -1,7 +1,38 @@
-﻿@page
-
-@model KutuphaneSatis.DTOs.Response.BookDetailResponse
+﻿@model KutuphaneSatis.DTOs.Response.BookDetailResponse
 
 @{
-    ViewData["Title"] = "Kitap Detayı";
+    // Sekme başlığını dinamik olarak kitabın adı yapabilirsin!
+    ViewData["Title"] = Model.Name + " - Kitap Detayı";
 }
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">@Model.Name</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Kitap Bilgileri</h4>
+                    <hr />
+                    <!-- Modelindeki property isimleri neyse onları buraya yazmalısın -->
+                    <p><strong>Yazar:</strong> @Model.AuthorName</p>
+                    <p><strong>Kategori:</strong> @Model.CatName</p>
+                    <p><strong>Stok Adedi:</strong> @Model.Stock</p>
+                    <p class="text-success" style="font-size: 1.2rem;">
+                        <strong>Fiyat:</strong> @Model.Price ₺
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="/api/Book/GetCatalog" class="btn btn-secondary">Kataloğa Dön</a>
+
+            <div>
+                <!-- İleride buraya Kirala ve Satın Al butonları gelecek -->
+                <button class="btn btn-warning">Kirala</button>
+                <button class="btn btn-success">Satın Al</button>
+            </div>
+        </div>
+    </div>
+</div>

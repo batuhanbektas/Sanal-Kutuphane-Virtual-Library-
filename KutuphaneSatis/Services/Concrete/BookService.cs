@@ -47,14 +47,15 @@ namespace KutuphaneSatis.Services.Concrete
         }
         public BookDetailResponse GetBookDetail(int id)
         {
-            var bookEntity = _bookRepository.GetByID(id);
+            // "Bana ID'si şu olan kitabı getir, gelirken yanına Category nesnesini de (Include) alıp gelsin."
+            var bookEntity = _bookRepository.GetByID(id, b => b.Category);
+
 
             if (bookEntity == null)
             {
                 return null;
 
             }
-
             BookDetailResponse response = new BookDetailResponse()
             {
                 Name = bookEntity.Name,
@@ -94,8 +95,8 @@ namespace KutuphaneSatis.Services.Concrete
 
         public void AddBook(CreateBookRequest createBook)
         {
-        
-            var category = _categoryRepository.GetAll().FirstOrDefault(c => c.Id == createBook.i);
+
+            var category = _categoryRepository.GetAll().FirstOrDefault(c => c.Id == createBook.CategoryId);
 
             if (category == null)
             {
@@ -121,6 +122,8 @@ namespace KutuphaneSatis.Services.Concrete
             // Veritabanından bütün kitapları çekip isim eşleştirmesi yapmaya gerek kalmadı!
             _bookRepository.Delete(id);
         }
+
+
 
 
     }
