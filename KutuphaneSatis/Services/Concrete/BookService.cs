@@ -65,7 +65,9 @@ namespace KutuphaneSatis.Services.Concrete
                 PageNumber = bookEntity.PageNumber,
                 Price = bookEntity.Price,
                 // "Eğer book.Category null değilse adını al, null ise boşluk döndür"
-                CatName = (!bookEntity.Category.isDeleted) ? bookEntity.Category.Name : " "
+                CatName = (!bookEntity.Category.isDeleted) ? bookEntity.Category.Name : " ",
+                ID = bookEntity.Id,
+                CategoryId = bookEntity.CategoryID
 
 
             };
@@ -123,6 +125,28 @@ namespace KutuphaneSatis.Services.Concrete
             _bookRepository.Delete(id);
         }
 
+
+        public void EditBook(EditBookRequest editBook)
+        {
+            var book = _bookRepository.GetAll().FirstOrDefault(c => c.Id == editBook.ID);
+
+            if (book == null)
+            {
+                throw new Exception("Belirtilen kategori bulunmadi veya silinmis.");
+            }
+            else
+            {
+                book.Price = editBook.Price;
+                book.CategoryID = editBook.CategoryId;
+                book.PageNumber = editBook.PageNumber;
+                book.Name = editBook.Name;
+                book.AuthorName = editBook.AuthorName;
+                book.Description = editBook.Description;
+                book.Stock = editBook.Stock;
+            }
+            _bookRepository.Update(book);
+
+        }
 
 
 

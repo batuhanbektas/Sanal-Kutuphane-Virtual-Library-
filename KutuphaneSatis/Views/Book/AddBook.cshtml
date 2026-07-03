@@ -27,14 +27,15 @@
                         <div class="mb-3">
                             <label for="CatName" class="form-label">Kategori Seçiniz</label>
                             <div class="input-group">
-                                <select class="form-select" id="CatName" name="CatName" required>
+                                <!-- name="CategoryId" diyerek DTO'daki özellik ile köprü kuruyoruz -->
+                                <select name="CategoryId" class="form-select"> 
                                     <option value="">Lütfen bir kategori seçin...</option>
-            
                                     @if (ViewBag.Categories != null)
                                     {
                                         foreach (var category in ViewBag.Categories)
                                         {
-                                            <option value="@category.Name">@category.Name</option>
+                                            <!-- value kısmına ID'yi koyuyoruz, ekrana Name yazdırıyoruz -->
+                                            <option value="@category.Id">@category.Name</option>
                                         }
                                     }
                                 </select>

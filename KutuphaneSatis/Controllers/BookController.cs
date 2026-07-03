@@ -5,22 +5,22 @@
     using Microsoft.Identity.Client;
 
 namespace KutuphaneSatis.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BookController : Controller
     {
-        [Route("api/[controller]")]
-        [ApiController]
-        public class BookController : Controller
+
+        private readonly IBookService _bookService;
+        private readonly ICategoryService _categoryService;
+
+
+
+        public BookController(IBookService bookService, ICategoryService categoryService)
         {
-
-            private readonly IBookService _bookService;
-            private readonly ICategoryService _categoryService;
-            
-
-
-            public BookController(IBookService bookService,ICategoryService categoryService)
-            {
-                _bookService = bookService;
-                _categoryService= categoryService;
-            }
+            _bookService = bookService;
+            _categoryService = categoryService;
+        }
 
 
 
@@ -48,49 +48,49 @@ namespace KutuphaneSatis.Controllers
 
         [HttpGet("{id}")]
         public IActionResult GetDetail(int id)
-            {
-                var bookDetail = _bookService.GetBookDetail(id);
+        {
+            var bookDetail = _bookService.GetBookDetail(id);
 
-                if (bookDetail == null)
-                {
-                    return NotFound("Aradiginiz Kitap Bulanamadi.");
-                 }
-                else
-                {
+            if (bookDetail == null)
+            {
+                return NotFound("Aradiginiz Kitap Bulanamadi.");
+            }
+            else
+            {
                 return View(bookDetail);
             }
-            
-            }
 
-            
+        }
+
+
 
 
 
         [HttpGet("AddBook")]
         public IActionResult AddBook()
-            {
-                var categories = _categoryService.GetAllCategories();
+        {
+            var categories = _categoryService.GetAllCategories();
 
-                ViewBag.Categories = categories;
+            ViewBag.Categories = categories;
 
-                return View();
-            }
+            return View();
+        }
 
         [HttpPost("AddBook")]
         public IActionResult AddBook([FromForm] CreateBookRequest createBookRequest)
+        {
+            if (createBookRequest.Stock != 0 && createBookRequest.PageNumber != 0 && createBookRequest.Price != 0)
             {
-                if(createBookRequest.Stock != 0 && createBookRequest.PageNumber != 0 && createBookRequest.Price != 0)
-                {
-                    _bookService.AddBook(createBookRequest);
-                    return RedirectToAction("GetCatalog");
-                }
-                else
-                {
-                    return BadRequest("Hatali Giris");
-                }
-                    
-            
+                _bookService.AddBook(createBookRequest);
+                return RedirectToAction("GetCatalog");
             }
+            else
+            {
+                return BadRequest("Hatali Giris");
+            }
+
+
+        }
 
 
         [HttpGet("RemoveBook")]
@@ -108,17 +108,49 @@ namespace KutuphaneSatis.Controllers
             return RedirectToAction("GetCatalog");
         }
 
+        [HttpGet("EditBook/{ID}")]
 
-        
+        public IActionResult EditBook(int ID)
+        {
+            var bookDetail = _bookService.GetBookDetail(ID);
+            var categories = _categoryService.GetAllCategories();
+            ViewBag.Categories = categories;
 
-            
-        
-        
+            if (bookDetail == null)
+            {
+                return NotFound("Aradiginiz Kitap Bulanamadi.");
+            }
+            else
+            {
+                return View(bookDetail);
+
+            }
         }
 
-    } 
+        [HttpPost("EditBook")]
+
+        public IActionResult EditBook ([FromForm] EditBookRequest editBook)
+        {
+
+            if (editBook.Stock != 0 && editBook.PageNumber != 0 && editBook.Price != 0)
+            {
+                _bookService.EditBook(editBook);
+                return RedirectToAction("GetCatalog");
+            }
+            else
+            {
+                return BadRequest("Hatali Giris");
+            }
+
+        }
+
+
+    }
+}
 
 
 
-    
+
+
+
 

@@ -1,0 +1,87 @@
+﻿@model KutuphaneSatis.DTOs.Response.BookDetailResponse
+
+@{
+    ViewData["Title"] = "Kitap Düzenle";
+}
+
+<div class="container mt-4">
+    <h2>Kitap Düzenle: @Model.Name</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form action="/api/Book/EditBook" method="post">
+                
+                <input type="hidden" name="ID" value="@Model.ID" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Kitap Adı</label>
+                    <input type="text" class="form-control" name="Name" value="@Model.Name" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Yazar Adı</label>
+                    <input type="text" class="form-control" name="AuthorName" value="@Model.AuthorName" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Açıklama</label>
+                    <textarea class="form-control" name="Description" rows="4">@Model.Description</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Fiyat (₺)</label>
+                        <input type="number" step="0.01" class="form-control" name="Price" value="@Model.Price.ToString("0.00").Replace(',','.')" required />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Stok Adedi</label>
+                        <input type="number" class="form-control" name="Stock" value="@Model.Stock" required />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Sayfa Sayısı</label>
+                        <input type="number" class="form-control" name="PageNumber" value="@Model.PageNumber" required />
+                    </div>
+
+                        <div class="mb-3">
+    <label for="CategoryId" class="form-label fw-bold">Kategori Seçiniz</label>
+    <div class="input-group">
+        <!-- name="CategoryId" diyerek DTO'daki özellik ile köprü kuruyoruz -->
+                            <select name="CategoryId" class="form-select" required>
+                                <option value="">Lütfen bir kategori seçin...</option>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    foreach (var category in ViewBag.Categories)
+                                    {
+                                        if (category.Id == Model.CategoryId)
+                                        {
+                                            <!-- ID'ler eşleşiyorsa, 'selected' özelliğine sahip etiketi basıyoruz -->
+                                            <option value="@category.Id" selected>@category.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <!-- Eşleşmiyorsa standart etiketi basıyoruz -->
+                                            <option value="@category.Id">@category.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+        <a href="/api/Category/ManageCategory" class="btn btn-outline-primary" title="Yeni Kategori Ekle">
+            Kategoriler
+        </a>
+    </div>
+</div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success px-4">Kaydet</button>
+                    <a href="/api/Book/GetCatalog" class="btn btn-secondary px-4 ms-2">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

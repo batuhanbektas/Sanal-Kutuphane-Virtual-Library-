@@ -14,5 +14,7 @@ namespace KutuphaneSatis.Services.Abstract
         public void RemoveBook(int id);
 
         public  List<BookListItemResponse> GetCatalogByCategory(int  categoryId);
+
+        public void EditBook(EditBookRequest editBook);
     }
 }

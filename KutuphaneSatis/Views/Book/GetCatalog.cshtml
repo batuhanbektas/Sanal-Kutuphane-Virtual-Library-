@@ -46,6 +46,9 @@
                     <td>@book.CatName</td>
                     <td>
                         <a href="/api/Book/@book.BookId" class="btn btn-info btn-sm">Detayları Gör</a>
+
+                        <a href="/api/Book/EditBook/@book.BookId" class="btn btn-warning btn-sm text-dark">Düzenle</a>
+
                         <form method="post" action="/api/Book/RemoveBook" style="display:inline;">
                             <input type="hidden" name="bookId" value="@book.BookId" />
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">

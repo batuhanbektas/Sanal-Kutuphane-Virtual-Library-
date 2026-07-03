@@ -2,9 +2,9 @@
 
 namespace KutuphaneSatis.Repositories.Abstract
 {
-    public interface ICategoryRepository : IGenericRepository<Category>
+    public interface ICartRepository : IGenericRepository<Cart>
     {
-
+        
 
     }
 }

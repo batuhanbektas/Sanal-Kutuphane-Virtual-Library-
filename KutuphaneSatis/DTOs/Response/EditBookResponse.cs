@@ -1,11 +1,7 @@
-﻿using KutuphaneSatis.DTOs.Response;
-using KutuphaneSatis.Models.Concrete;
-
-namespace KutuphaneSatis.DTOs.Request
+﻿namespace KutuphaneSatis.DTOs.Response
 {
-    public class CreateBookRequest
+    public class EditBookResponse
     {
-
 
         public string Name { get; set; }
 
@@ -20,6 +16,7 @@ namespace KutuphaneSatis.DTOs.Request
 
         public int CategoryId { get; set; }
 
+        public int ID { get; set; }
 
     }
 }
