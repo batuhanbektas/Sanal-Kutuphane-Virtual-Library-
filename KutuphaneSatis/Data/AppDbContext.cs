@@ -26,6 +26,6 @@ namespace KutuphaneSatis.Data
 
         public DbSet<RentalBook> RentalDetails { get; set; }
 
-        public DbSet<User> Users { get; set;  }
+        public DbSet<User> User { get; set;  }
     }
 }

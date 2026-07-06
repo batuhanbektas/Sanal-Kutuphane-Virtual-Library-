@@ -9,13 +9,17 @@ namespace KutuphaneSatis.Repositories.Concrete
     {
 
 
-        UserRepository (AppDbContext context) : base (context){}
+        public UserRepository (AppDbContext context) : base (context){}
 
         public User GetByEmail(string email)
         {
             return _dbSet.FirstOrDefault(x => x.Email == email);
         }
-
+        
+        public bool IsThereUserWithEmail(string email)
+        {
+            return _context.User.Any(u => u.Email == email);
+        }
         public User GetUserWithOrders(int userId)
         {
             return _dbSet.Include(x => x.Orders).FirstOrDefault(x => x.Id == userId);

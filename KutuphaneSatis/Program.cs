@@ -8,6 +8,7 @@ using KutuphaneSatis.Repositories.Abstract;
 using KutuphaneSatis.Repositories.Concrete;
 using KutuphaneSatis.Services.Abstract;
 using KutuphaneSatis.Services.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,12 +25,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repository'lerin sisteme tanıtılması (Eksik olan bu!)
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 // Servislerin sisteme tanıtılması
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IUserLRService, UserLRService>();
+
+// Cookie ayarlarını sisteme dahil ediyoruz
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "Kutuphane.Auth"; // Tarayıcıda görünecek çerez adı
+        options.LoginPath = "/Home/Login"; // Giriş yapılmamışsa yönlendirilecek sayfa
+        options.AccessDeniedPath = "/Home/AccessDenied"; // Yetkisiz erişimde gidilecek sayfa
+    });
+
 
 var app = builder.Build();
 
@@ -45,6 +57,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication(); // Kimlik doğrulama (Önce bu olmalı)
+app.UseAuthorization();  // Yetkilendirme
 
 app.UseAuthorization();
 

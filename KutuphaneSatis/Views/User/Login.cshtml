@@ -1,0 +1,27 @@
+﻿<!-- 1. Model Bağlantısı -->
+@model KutuphaneSatis.DTOs.Request.UserRequest.UserLoginRequest
+@* Yukarıdaki satır, bu View'ın hangi sınıf ile çalışacağını MVC'ye söyler. *@
+
+<h2>Sanal Kütüphane Giriş</h2>
+
+<!-- 2. Hata Mesajları Gösterimi -->
+<!-- Controller'da yazdığın "Hatali Sifre" gibi ModelState hataları tam olarak burada ekrana basılır. -->
+<div asp-validation-summary="All" class="hata-stili"></div>
+
+<!-- 3. Veri Gönderme (Form) -->
+<form asp-action="Login" method="post">
+
+    <div>
+        <label>E-posta:</label>
+        <!-- asp-for kullanarak input'u doğrudan Model'deki özelliğe bağlıyoruz -->
+        <input asp-for="Email" type="email" />
+    </div>
+
+    <div>
+        <label>Şifre:</label>
+        <input asp-for="Password" type="password" />
+    </div>
+
+    <button type="submit">Giriş Yap</button>
+
+</form>

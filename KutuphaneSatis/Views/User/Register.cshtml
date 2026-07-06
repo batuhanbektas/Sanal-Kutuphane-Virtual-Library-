@@ -1,0 +1,53 @@
+﻿@model KutuphaneSatis.DTOs.Request.UserRequest.UserRegisterRequest
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Sisteme Kayıt Ol</h3>
+
+                <!-- Form POST işlemi ile UserController'daki Register aksiyonuna gidecek -->
+                <form asp-controller="User" asp-action="Register" method="post">
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Ad</label>
+                        <input asp-for="Name" class="form-control" placeholder="Adınızı giriniz" />
+                        <!-- Modeldeki Required hata mesajı burada görünecek -->
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Surname" class="form-label">Soyad</label>
+                        <input asp-for="Surname" class="form-control" placeholder="Soyadınızı giriniz" />
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">E-Posta</label>
+                        <input asp-for="Email" class="form-control" placeholder="ornek@domain.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Şifre</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- İstemci taraflı validasyon (Client-Side Validation) scriptlerini dahil ediyoruz -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

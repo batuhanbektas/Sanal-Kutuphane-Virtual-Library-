@@ -8,6 +8,7 @@ namespace KutuphaneSatis.Repositories.Abstract
         public User GetByEmail(string email);
 
         public User GetUserWithOrders(int userId);
+        public bool IsThereUserWithEmail(string email);
 
         public User GetUserWithRentals(int userId);
 

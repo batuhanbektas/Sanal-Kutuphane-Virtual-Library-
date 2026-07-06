@@ -29,6 +29,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        @* Eğer sistemde bir çerez varsa (kullanıcı giriş yaptıysa) *@
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <!-- Profilim Linki -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Profil">Profilim (@User.Identity.Name)</a>
+                            </li>
+                            <!-- Çıkış Linki -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/Logout">Çıkış Yap</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Sistemde çerez yoksa (misafirse) sadece Giriş Yap görünür -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/Login">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/Register">Kayit Ol</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
