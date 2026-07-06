@@ -1,0 +1,27 @@
+﻿using KutuphaneSatis.Models.Concrete;
+
+namespace KutuphaneSatis.DTOs.Response.BookResponse
+{
+    public class BookDetailResponse
+    {
+        public string Name { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public string AuthorName { get; set; }
+
+        public string Description { get; set; }
+
+        public int Stock { get; set; }
+
+        public string CatName{ get; set; }
+
+        public decimal Price { get; set; }
+
+        public int ID { get; set; }
+
+        public int CategoryId { get; set; }
+
+    }
+
+}

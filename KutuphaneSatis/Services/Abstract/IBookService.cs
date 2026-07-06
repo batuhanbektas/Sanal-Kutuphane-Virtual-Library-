@@ -1,5 +1,5 @@
-﻿using KutuphaneSatis.DTOs.Request;
-using KutuphaneSatis.DTOs.Response;
+﻿using KutuphaneSatis.DTOs.Request.BookRequest;
+using KutuphaneSatis.DTOs.Response.BookResponse;
 
 namespace KutuphaneSatis.Services.Abstract
 {

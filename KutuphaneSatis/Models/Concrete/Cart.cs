@@ -8,6 +8,7 @@ namespace KutuphaneSatis.Models.Concrete
 
         public ICollection<CartDetail> CartDetail { get; set; }
 
+       
         public Cart()
         {
             CartDetail = new List<CartDetail>();

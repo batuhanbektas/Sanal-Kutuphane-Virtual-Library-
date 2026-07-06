@@ -1,8 +1,8 @@
-﻿    using KutuphaneSatis.DTOs.Request;
-    using KutuphaneSatis.Repositories.Abstract;
-    using KutuphaneSatis.Services.Abstract;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Identity.Client;
+﻿using KutuphaneSatis.DTOs.Request.BookRequest;
+using KutuphaneSatis.Repositories.Abstract;
+using KutuphaneSatis.Services.Abstract;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace KutuphaneSatis.Controllers
 {

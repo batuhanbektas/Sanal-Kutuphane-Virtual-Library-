@@ -12,6 +12,7 @@ namespace KutuphaneSatis.Repositories.Abstract
         public User GetUserWithRentals(int userId);
 
 
+        public string GetPassword(int userId);
 
 
 

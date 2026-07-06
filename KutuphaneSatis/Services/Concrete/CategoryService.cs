@@ -1,5 +1,5 @@
-﻿using KutuphaneSatis.DTOs.Request;
-using KutuphaneSatis.DTOs.Response;
+﻿using KutuphaneSatis.DTOs.Request.CategoryRequest;
+using KutuphaneSatis.DTOs.Response.CategoryResponse;
 using KutuphaneSatis.Models.Concrete;
 using KutuphaneSatis.Repositories.Abstract;
 using KutuphaneSatis.Repositories.Concrete;

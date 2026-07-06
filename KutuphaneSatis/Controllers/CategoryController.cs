@@ -1,4 +1,4 @@
-﻿using KutuphaneSatis.DTOs.Request;
+﻿using KutuphaneSatis.DTOs.Request.CategoryRequest;
 using KutuphaneSatis.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 

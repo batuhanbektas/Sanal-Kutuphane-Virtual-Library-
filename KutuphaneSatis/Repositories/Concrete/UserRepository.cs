@@ -25,5 +25,11 @@ namespace KutuphaneSatis.Repositories.Concrete
         {
             return _dbSet.Include(x => x.Rents).FirstOrDefault(x => x.Id == userId);
         }
+
+        public string GetPassword(int userId) 
+        {
+            return _dbSet.Where(x => x.Id == userId).Select(x=>x.Password).FirstOrDefault();
+            
+        }
     }
 }

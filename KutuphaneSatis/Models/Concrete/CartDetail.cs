@@ -14,5 +14,7 @@ namespace KutuphaneSatis.Models.Concrete
 
 
         public int Quantity { get; set; }
+
+        public decimal Price { get; set; }
     }
 }
