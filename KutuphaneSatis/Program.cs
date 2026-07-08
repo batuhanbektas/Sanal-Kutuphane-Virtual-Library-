@@ -33,6 +33,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserLRService, UserLRService>();
 
+// HttpContextAccessor'ı sisteme dahil ediyoruz
+builder.Services.AddHttpContextAccessor();
+
 // Cookie ayarlarını sisteme dahil ediyoruz
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

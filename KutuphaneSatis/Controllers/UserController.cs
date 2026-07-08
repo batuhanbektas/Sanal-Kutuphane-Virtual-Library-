@@ -1,4 +1,4 @@
-﻿using KutuphaneSatis.DTOs.Request.UserRequest;
+﻿    using KutuphaneSatis.DTOs.Request.UserRequest;
 using KutuphaneSatis.Enums;
 using KutuphaneSatis.Services.Abstract;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KutuphaneSatis.Controllers
 {
@@ -47,11 +48,11 @@ namespace KutuphaneSatis.Controllers
 
         [HttpGet]
 
-        public IActionResult Register() { return View("Register"); } 
+        public IActionResult Register() { return View("Register"); }
+
 
 
         
-
         [HttpGet]
         public IActionResult Login() { return View("Login"); }
 
@@ -105,6 +106,33 @@ namespace KutuphaneSatis.Controllers
 
 
         }
+
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                // Bir şeyler ters gittiyse ve e-posta yoksa tekrar logine yolla
+                return RedirectToAction("Login");
+            }
+
+            var userProfileDto = _userService.GetProfileByEmail(userEmail);
+
+            if (userProfileDto == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+
+            return View(userProfileDto);
+
+        }
+
         
     
     

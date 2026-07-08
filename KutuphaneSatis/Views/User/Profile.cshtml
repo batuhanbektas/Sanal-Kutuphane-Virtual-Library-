@@ -1,0 +1,44 @@
+﻿@* En üste DTO'nun bulunduğu namespace'i yazmalısın. Kendi projene göre düzeltmeyi unutma! *@
+@model KutuphaneSatis.DTOs.Response.UserResponse.UserProfileResponse
+
+@{
+    ViewData["Title"] = "Profilim";
+    // Eğer projenin genel bir layout'u varsa otomatik onu kullanacaktır.
+    // Yoksa Layout = null; yazabilirsin.
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <h4 class="mb-0"><i class="bi bi-person-circle"></i> Kullanıcı Profili</h4>
+                </div>
+                <div class="card-body p-4">
+
+
+                    <div class="mb-3 border-bottom pb-2">
+                        <label class="form-label text-muted fw-bold small mb-0">Ad Soyad</label>
+                        <div class="fs-5">@Model.Name @Model.Surname</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted fw-bold small mb-0">E-Posta Adresi</label>
+                        <div class="fs-5">@Model.Email</div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="/Home/Index" class="btn btn-outline-secondary">
+                            Ana Sayfaya Dön
+                        </a>
+
+                        <a href="/User/LogOut" class="btn btn-danger">
+                            Çıkış Yap
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using KutuphaneSatis.Models.Concrete;
 using KutuphaneSatis.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace KutuphaneSatis.Repositories.Concrete
 {
@@ -14,19 +15,13 @@ namespace KutuphaneSatis.Repositories.Concrete
 
         public List<CartDetail> GetCartDetails(int id)
         {
-            var details = _dbSet
+            return _dbSet
                 .Where(x => x.Id == id)
-                .Select(x => x.CartDetail)
-                .FirstOrDefault();
-
-            // Eğer o ID'de bir sepet yoksa details null döner. Null referans hatası yememek için kontrol ediyoruz.
-            if (details != null)
-            {
-                return details.ToList(); // ICollection'ı List'e çevirip döndürüyoruz.
-            }
-
-            return new List<CartDetail>(); // Sepet yoksa boş liste dön.
+                .SelectMany(x => x.CartDetail) // Sepetin içindeki koleksiyonu direkt dışarı çıkartır
+                .ToList(); // Sepet yoksa veya boşsa kendi kendine boş liste döner
         }
+        
+
 
     }
 }

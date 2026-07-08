@@ -6,8 +6,9 @@
         public int BookId { get; set; }
         public int Quantity { get; set; }
 
-        public double UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
 
+        public int CartId { get; set; }
 
 
     }

@@ -12,5 +12,7 @@ namespace KutuphaneSatis.DTOs.Response.CartResponses
         public decimal TotalPrice { get; set; }
 
 
+
+
     }
 }
