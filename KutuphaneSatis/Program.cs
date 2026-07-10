@@ -4,6 +4,7 @@
 
 
 using KutuphaneSatis.Data;
+using KutuphaneSatis.Models.Concrete;
 using KutuphaneSatis.Repositories.Abstract;
 using KutuphaneSatis.Repositories.Concrete;
 using KutuphaneSatis.Services.Abstract;
@@ -26,12 +27,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IGenericRepository<CartDetail>, GenericRepository<CartDetail>>();
 
 
 // Servislerin sisteme tanıtılması
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserLRService, UserLRService>();
+builder.Services.AddScoped<ICartService, CartService>();
+
 
 // HttpContextAccessor'ı sisteme dahil ediyoruz
 builder.Services.AddHttpContextAccessor();
@@ -64,7 +69,6 @@ app.UseRouting();
 app.UseAuthentication(); // Kimlik doğrulama (Önce bu olmalı)
 app.UseAuthorization();  // Yetkilendirme
 
-app.UseAuthorization();
 
 app.MapStaticAssets();
 

@@ -36,6 +36,9 @@
                         @* Eğer sistemde bir çerez varsa (kullanıcı giriş yaptıysa) *@
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Cart/GetCart">Sepetim</a>
+                            </li>
                             <!-- Profilim Linki -->
                             <li class="nav-item">
                                 <a class="nav-link" href="/User/Profile">Profilim (@User.Identity.Name)</a>
@@ -44,7 +47,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/User/Logout">Çıkış Yap</a>
                             </li>
-                        }
+                        }   
                         else
                         {
                             <!-- Sistemde çerez yoksa (misafirse) sadece Giriş Yap görünür -->

@@ -1,4 +1,6 @@
 ﻿using KutuphaneSatis.DTOs.Request;
+using KutuphaneSatis.DTOs.Response.CartResponse.CartResponse;
+
 using KutuphaneSatis.Models.Concrete;
 
 namespace KutuphaneSatis.DTOs.Response.CartResponses
@@ -7,7 +9,7 @@ namespace KutuphaneSatis.DTOs.Response.CartResponses
     {
         public int UserId { get; set; }
 
-        public List<CartDetail> CartItems { get; set; }
+        public List<CartItemResponse> CartItems { get; set; }
 
         public decimal TotalPrice { get; set; }
 

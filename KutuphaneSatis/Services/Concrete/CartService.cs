@@ -1,13 +1,15 @@
 ﻿using KutuphaneSatis.DTOs.Request.CartRequest;
+using KutuphaneSatis.DTOs.Response.CartResponse.CartResponse;
 using KutuphaneSatis.DTOs.Response.CartResponses;
 using KutuphaneSatis.Models.Concrete;
 using KutuphaneSatis.Repositories.Abstract;
 using KutuphaneSatis.Repositories.Concrete;
+using KutuphaneSatis.Services.Abstract;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace KutuphaneSatis.Services.Concrete
 {
-    public class CartService
+    public class CartService : ICartService
     {
         private readonly IBookRepository _bookRepository;
         private readonly ICartRepository _cartRepository;
@@ -28,20 +30,33 @@ namespace KutuphaneSatis.Services.Concrete
 
         public CartResponse GetCart(int id)
         {
-        
+          
             var cart = _cartRepository.GetAll().FirstOrDefault(x => x.Id == id);
-            var cartitems = _cartRepository.GetCartDetails(id);
+            if (cart == null)
+            {
+                return null;
+            }
 
-            if(cart == null){return null;}
+           
+            List<CartDetail> cartitems = _cartRepository.GetCartDetails(id);
 
-        
+            List<CartItemResponse> itemResponses = cartitems.Select(item => new CartItemResponse
+            {
+                CartId = item.CartId,
+                BookId = item.BookId,
+                Quantity = item.Quantity,
+                UnitPrice = item.Price,
+                BookName = item.BookName,
+                cartitemid = item.Id
+            }).ToList();
+
             CartResponse cartResponse = new CartResponse()
             {
-                CartItems = cartitems,
+                UserId = cart.UserId,
                 TotalPrice = cart.TotalPrice,
-                UserId = cart.UserId
-
+                CartItems = itemResponses 
             };
+
             return cartResponse;
         }
 
@@ -70,7 +85,8 @@ namespace KutuphaneSatis.Services.Concrete
                     CartId = cartitem.CartId,
                     BookId = cartitem.BookId,
                     Quantity = cartitem.Quantity,
-                    Price = cartitem.UnitPrice * cartitem.Quantity
+                    Price = cartitem.UnitPrice * cartitem.Quantity,
+                    BookName = cartitem.BookName
 
 
                 };
@@ -155,10 +171,27 @@ namespace KutuphaneSatis.Services.Concrete
         {
             var cartdetail = _cartDetailRepository.GetByID(cartDetailId);
 
-            cartdetail.Quantity = newQuantity;
+            if (cartdetail != null)
+            {
+                decimal unitPrice = cartdetail.Price / cartdetail.Quantity;
 
-            _cartDetailRepository.Update(cartdetail);
+                decimal oldLineTotal = cartdetail.Price;
 
+                cartdetail.Quantity = newQuantity;
+                cartdetail.Price = unitPrice * newQuantity;
+
+                _cartDetailRepository.Update(cartdetail);
+
+                var activeCart = _cartRepository.GetByID(cartdetail.CartId);
+
+                if (activeCart != null)
+                {
+                    activeCart.TotalPrice -= oldLineTotal;
+                    activeCart.TotalPrice += cartdetail.Price;
+
+                    _cartRepository.Update(activeCart);
+                }
+            }
         }
     }
 

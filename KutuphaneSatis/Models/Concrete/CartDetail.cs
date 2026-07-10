@@ -12,6 +12,7 @@ namespace KutuphaneSatis.Models.Concrete
 
         public Book Book { get; set; }
 
+        public string BookName { get; set; }
 
         public int Quantity { get; set; }
 

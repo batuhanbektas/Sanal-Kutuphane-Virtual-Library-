@@ -17,11 +17,32 @@ namespace KutuphaneSatis.Repositories.Concrete
         {
             return _dbSet
                 .Where(x => x.Id == id)
-                .SelectMany(x => x.CartDetail) // Sepetin içindeki koleksiyonu direkt dışarı çıkartır
-                .ToList(); // Sepet yoksa veya boşsa kendi kendine boş liste döner
+                // Sadece silinMEMİŞ (isDeleted == false) olan detayları getir
+                .SelectMany(x => x.CartDetail.Where(d => d.isDeleted == false))
+                .ToList();
         }
-        
+
+        public Cart GetCartByUserId(int id)
+        {
+            return _dbSet
+                .Where(x => x.UserId == id)
+                .FirstOrDefault();
+
+        }
 
 
-    }
+        public int ReturnCartId(int Userid)
+        {
+            return _dbSet
+                .Where(x => x.UserId == Userid)
+                .Select(x => x.Id)
+                .FirstOrDefault();
+
+
+        }
+
+
+
+    } 
 }
+

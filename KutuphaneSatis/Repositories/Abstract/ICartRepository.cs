@@ -7,5 +7,8 @@ namespace KutuphaneSatis.Repositories.Abstract
 
         public List<CartDetail> GetCartDetails(int id);
 
+        public int ReturnCartId(int Userid);
+
+
     }
 }

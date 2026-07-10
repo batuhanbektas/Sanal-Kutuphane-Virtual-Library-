@@ -6,6 +6,7 @@
         public string Email { get; set; }
         public string Surname { get; set; }
 
+        public int CartId { get; set; }
 
     }
 }

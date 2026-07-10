@@ -55,6 +55,12 @@
                                 Sil
                             </button>
                         </form>
+                        <form asp-controller="Cart" asp-action="AddItemCart" method="post" style="display:inline;">
+                            <input type="hidden" name="bookId" value="@book.BookId" />
+                            <button type="submit" class="btn btn-success btn-sm">
+                                Sepete Ekle
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }

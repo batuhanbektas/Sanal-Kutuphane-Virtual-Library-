@@ -10,6 +10,18 @@ namespace KutuphaneSatis.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Var olan ayarları ezmemek için temel metodu çağırıyoruz
+            base.OnModelCreating(modelBuilder);
+
+            // Bire-Bir (One-to-One) İlişki Kurulumu
+            modelBuilder.Entity<User>()
+                .HasOne(a => a.Cart)     // Asıl tablonun BİR TANE bağlı tablosu vardır
+                .WithOne(b => b.User)     // Bağlı tablonun da BİR TANE asıl tablosu vardır
+                .HasForeignKey<Cart>(b => b.UserId); // Yabancı Anahtar bağlı tablonun içindedir
+        }
+
         public DbSet<Book> Books { get; set; }
 
         public DbSet<Category> Categories { get; set; }
@@ -27,5 +39,9 @@ namespace KutuphaneSatis.Data
         public DbSet<RentalBook> RentalDetails { get; set; }
 
         public DbSet<User> User { get; set;  }
+
+        public DbSet<Cart> Cart {  get; set; }
+
+        public DbSet<CartDetail> CartDetail { get; set; }
     }
 }

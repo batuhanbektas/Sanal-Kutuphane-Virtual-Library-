@@ -1,5 +1,6 @@
 ﻿using KutuphaneSatis.DTOs.Request.BookRequest;
 using KutuphaneSatis.DTOs.Response.BookResponse;
+using KutuphaneSatis.Models.Concrete;
 
 namespace KutuphaneSatis.Services.Abstract
 {
@@ -16,5 +17,8 @@ namespace KutuphaneSatis.Services.Abstract
         public  List<BookListItemResponse> GetCatalogByCategory(int  categoryId);
 
         public void EditBook(EditBookRequest editBook);
+
+        public Book GetBook(int id);
+
     }
 }

@@ -9,5 +9,7 @@
 
         public int CartId { get; set; }
 
+        public string BookName { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using KutuphaneSatis.DTOs.Request.UserRequest;
+﻿using KutuphaneSatis.DTOs.Request.CartRequest;
+using KutuphaneSatis.DTOs.Request.UserRequest;
 using KutuphaneSatis.DTOs.Response.UserResponse;
 using KutuphaneSatis.Enums;
 using KutuphaneSatis.Models.Concrete;
@@ -19,18 +20,22 @@ namespace KutuphaneSatis.Services.Concrete
 
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICartService _cartService;
+        private readonly ICartRepository _cartRepository;
 
-        public UserLRService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public UserLRService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, ICartService cartService, ICartRepository cartRepository)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
+            _cartService = cartService;
+            _cartRepository = cartRepository;
         }
 
-        public RegisterEnums CreateUser(UserRegisterRequest userRegister)
+        public RegisterResultDto CreateUser(UserRegisterRequest userRegister)
         {
             if (_userRepository.IsThereUserWithEmail(userRegister.Email))
             {
-                return RegisterEnums.EmailInUse;
+                return new RegisterResultDto { Status = RegisterEnums.EmailInUse};
             }
             else
             {
@@ -42,13 +47,35 @@ namespace KutuphaneSatis.Services.Concrete
                     Password = userRegister.Password,
                 };
                 _userRepository.Create(user);
-                return RegisterEnums.Success;
 
+                return new RegisterResultDto
+                {
+                    Status = RegisterEnums.Success,
+                    UserId = user.Id
+                };
             }
 
         }
-
         
+        public void CreateCart(int id)
+        {
+            var user = _userRepository.GetByID(id);
+
+            CreateCartRequest cartRequest = new CreateCartRequest()
+            {
+                UserId = user.Id
+            };
+
+            _cartService.CreateCart(cartRequest);
+            
+            var cartid = _cartRepository.ReturnCartId(id);
+            
+            user.CartId = cartid;
+
+            _userRepository.Update(user);
+        }
+
+
         public LoginResult Check(UserLoginRequest request)
         {
             // 1. Veritabanında kullanıcıyı e-posta ile ara
@@ -91,10 +118,28 @@ namespace KutuphaneSatis.Services.Concrete
 
 
             };
-        
-        
+
         }
 
+        public UserProfileResponse GetUserById(int id) 
+        {
+            var user = _userRepository.GetByID(id);
+
+            if (user == null)
+            {
+                return null;
+            }
+            return new UserProfileResponse
+            {
+                Email = user.Email,
+                Name = user.Name,
+                Surname = user.Surname,
+                CartId = user.CartId
+
+            };
+            
+
+        }
 
 
 

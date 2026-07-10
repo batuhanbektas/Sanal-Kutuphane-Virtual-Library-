@@ -15,6 +15,10 @@ namespace KutuphaneSatis.Models.Concrete
         public string Surname { get; set; }
         public string Password { get; set; }
 
+        public int CartId { get; set; }
+
+        public Cart Cart { get; set; }
+
 
         public ICollection<Order>? Orders { get; set; } = null;
 

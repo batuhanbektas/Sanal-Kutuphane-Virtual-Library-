@@ -148,6 +148,15 @@ namespace KutuphaneSatis.Services.Concrete
 
         }
 
+        public Book GetBook(int id)
+        {
+            var book = _bookRepository.GetByID(id);
+
+            return book;
+
+        }
+
+
 
 
     }

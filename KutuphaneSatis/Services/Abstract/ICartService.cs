@@ -10,6 +10,8 @@ namespace KutuphaneSatis.Services.Abstract
         public void CreateCart(CreateCartRequest cartRequest);
         public void CreateDetailandAdd(CartItemRequest cartitem);
         public void RemoveItemFromCart(int cartDetailId);
+
+
         public void ClearCart(int cartId);
         public void UpdateItemQuantity(int cartDetailId, int newQuantity);
 
