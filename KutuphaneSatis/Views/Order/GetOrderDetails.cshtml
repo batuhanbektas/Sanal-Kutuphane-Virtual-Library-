@@ -1,0 +1,56 @@
+﻿@model KutuphaneSatis.DTOs.Response.OrderResponse.OrderDetailResponse
+
+@{
+    ViewData["Title"] = "Sipariş Detayı";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Sipariş Detayı</h2>
+        <a asp-controller="Order" asp-action="GetOrders" class="btn btn-secondary">Siparişlerime Dön</a>
+    </div>
+    <hr />
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Sipariş Tarihi:</strong> @Model.OrderTime.ToString("dd.MM.yyyy")</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4 class="mb-0">Toplam Tutar: <span class="text-success">@Model.TotalPrice ₺</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>İçerisindeki Kitaplar</h4>
+    <table class="table table-bordered mt-3">
+        <thead class="table-secondary">
+            <tr>
+                <th>Kitap Adı</th>
+                <th>Adet</th>
+                <th>Fiyati</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.OrderItem != null && Model.OrderItem.Any())
+            {
+                @foreach (var item in Model.OrderItem)
+                {
+                    <tr>
+                        <td>@item.BookName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center text-muted">Sipariş detayı bulunamadı.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

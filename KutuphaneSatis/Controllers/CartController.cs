@@ -1,4 +1,5 @@
 ﻿using KutuphaneSatis.DTOs.Request.CartRequest;
+using KutuphaneSatis.DTOs.Request.OrderRequest;
 using KutuphaneSatis.Models.Concrete;
 using KutuphaneSatis.Services.Abstract;
 using Microsoft.AspNetCore.Authentication;
@@ -15,14 +16,18 @@ namespace KutuphaneSatis.Controllers
         private readonly ICartService _cartService;
         private readonly IUserLRService _userservice;
         private readonly IBookService _bookService;
+        private readonly IOrderService _orderService;
+        private readonly IRentalService _rentService;
 
 
 
-        public CartController(ICartService cartService,IUserLRService userservice, IBookService bookService)
+        public CartController(ICartService cartService,IUserLRService userservice, IBookService bookService, IOrderService orderService,IRentalService rentService)
         {
             _cartService = cartService;
             _userservice = userservice;
             _bookService = bookService;
+            _orderService = orderService;
+            _rentService = rentService;
         }
 
         [HttpGet]
@@ -53,7 +58,7 @@ namespace KutuphaneSatis.Controllers
 
                 var user = _userservice.GetUserById(userid);
 
-
+                
                 if (user != null)
                 {
                     CartItemRequest cartitem = new CartItemRequest()
@@ -63,7 +68,7 @@ namespace KutuphaneSatis.Controllers
                         Quantity = quantity,
                         UnitPrice = book.Price,
                         BookName = book.Name
-
+                        
                     };
 
                     _cartService.CreateDetailandAdd(cartitem);
@@ -95,10 +100,54 @@ namespace KutuphaneSatis.Controllers
         }
 
         [HttpPost]
+
+        public IActionResult RemoveItem(int cartDetailId) 
+        {
+            _cartService.RemoveItemFromCart(cartDetailId);
+            return RedirectToAction("GetCart");
+
+        }
+
+
+        [HttpPost]
         public IActionResult ClearCart(int cartId)
         {
             _cartService.ClearCart(cartId);
             return RedirectToAction("GetCart");
         }
+
+
+        [HttpPost]
+        public IActionResult CreateOrder()
+        {
+
+            var useridString = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userid = int.Parse(useridString);
+
+
+            _orderService.CreateOrder(userid);
+
+            return RedirectToAction("GetOrders", "Order");
+
+
+        }
+
+        [HttpPost]
+        public IActionResult CreateRent()
+        {
+
+            var useridString = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userid = int.Parse(useridString);
+
+            _rentService.CreateRent(userid);
+
+
+            return RedirectToAction("GetRents", "Rent");
+
+
+        }
+
+
+
     }
 }

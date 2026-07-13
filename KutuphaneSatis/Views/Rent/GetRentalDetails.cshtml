@@ -1,0 +1,78 @@
+﻿@model KutuphaneSatis.DTOs.Response.RentResponse.RentalDetailResponse
+
+@{
+    ViewData["Title"] = "Kiralama Detayı";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Kiralama İşlemi Detayı</h2>
+        <a asp-controller="Rent" asp-action="GetRents" class="btn btn-secondary">Kiralamalarıma Dön</a>
+    </div>
+    <hr />
+
+    <div class="card mb-4 shadow-sm border-primary">
+        <div class="card-body bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Başlangıç Tarihi:</strong> @Model.RStartTime.ToString("dd.MM.yyyy")</p>
+                    <p class="mb-1">
+                        <strong>Bitiş Tarihi:</strong>
+                        @(Model.REndTime != DateOnly.MinValue ? Model.REndTime.ToString("dd.MM.yyyy") : "Henüz Teslim Edilmedi")
+                    </p>
+                    <p class="mb-0"><strong>Kullanıcı ID:</strong> @Model.UserId</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4 class="mb-0 mt-3 mt-md-0">Toplam Tutar: <span class="text-success fw-bold">@Model.TotalPrice ₺</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-4"><i class="bi bi-book"></i> Kiralanan Kitaplar</h4>
+    <table class="table table-bordered mt-3 shadow-sm">
+        <thead class="table-secondary">
+            <tr>
+                <th>Kitap Adı</th>
+                <th class="text-center">Kiralanan Adet</th>
+                <th class="text-center">Süre (Gün)</th>
+                <th class="text-center">Birim Fiyat</th>
+                <th class="text-center">İade Edilen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.RentItem != null && Model.RentItem.Any())
+            {
+                @foreach (var item in Model.RentItem)
+                {
+                    <tr>
+                        <td class="align-middle">@item.BookName</td>
+                        <td class="align-middle text-center">@item.RentalQuantity</td>
+                        <td class="align-middle text-center">@item.RentalDurationDays Gün</td>
+                        <td class="align-middle text-center">@item.UnitPrice ₺</td>
+                        <td class="align-middle text-center">
+                            @if (item.ReturnedQuantitiy == item.RentalQuantity)
+                            {
+                                <span class="badge bg-success">Tümü İade Edildi (@item.ReturnedQuantitiy)</span>
+                            }
+                            else if (item.ReturnedQuantitiy > 0)
+                            {
+                                <span class="badge bg-warning text-dark">Eksik İade (@item.ReturnedQuantitiy)</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">İade Edilmedi (0)</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Bu işleme ait kitap detayı bulunamadı.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

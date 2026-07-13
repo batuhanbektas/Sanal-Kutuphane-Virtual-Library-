@@ -6,6 +6,13 @@ namespace KutuphaneSatis.Repositories.Abstract
     {
         public IEnumerable<Order> OSortedDate();
 
+        public Order GetOrderByUserId(int id);
+
+        public int ReturnOrderId(int Userid);
+
+        public List<OrderBook> GetOrderDetails(int id);
+
+
 
     }
 }

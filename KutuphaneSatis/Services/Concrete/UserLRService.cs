@@ -51,7 +51,8 @@ namespace KutuphaneSatis.Services.Concrete
                 return new RegisterResultDto
                 {
                     Status = RegisterEnums.Success,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    Name = user.Name,
                 };
             }
 

@@ -45,6 +45,7 @@ namespace KutuphaneSatis.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()),
                 new Claim(ClaimTypes.Email, request.Email),
+                new Claim(ClaimTypes.Name, result.Name.ToString()),
                 new Claim(ClaimTypes.Role, "StandartKullanici")
             };
 

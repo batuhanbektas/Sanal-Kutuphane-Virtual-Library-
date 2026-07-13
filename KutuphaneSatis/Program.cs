@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -29,6 +30,11 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IGenericRepository<CartDetail>, GenericRepository<CartDetail>>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IGenericRepository<OrderBook>, GenericRepository<OrderBook>>();
+builder.Services.AddScoped<IRentalRepository, RentalRepository>();
+builder.Services.AddScoped<IGenericRepository<RentalBook>, GenericRepository<RentalBook>>();
+
 
 
 // Servislerin sisteme tanıtılması
@@ -36,7 +42,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserLRService, UserLRService>();
 builder.Services.AddScoped<ICartService, CartService>();
-
+// "Eğer biri senden IOrderService isterse, ona OrderService sınıfını ver" diyoruz.
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IRentalService, RentalService>();
 
 // HttpContextAccessor'ı sisteme dahil ediyoruz
 builder.Services.AddHttpContextAccessor();

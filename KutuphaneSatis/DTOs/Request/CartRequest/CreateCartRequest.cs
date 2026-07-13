@@ -9,6 +9,5 @@
 
         public decimal TotalPrice { get; set; }
 
-        public int CartId { get; set; }
     }
 }

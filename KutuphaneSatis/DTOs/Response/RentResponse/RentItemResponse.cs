@@ -14,6 +14,12 @@ namespace KutuphaneSatis.DTOs.Response.RentResponse
 
         public int RentalQuantity { get; set; } = 0;
 
-        public double UnitPrice { get; set; }
+        public string BookName { get; set; }
+
+        public int RentalId { get; set; }
+
+        public int RentalBookId { get; set; }
+
+        public decimal UnitPrice { get; set; }
     }
 }

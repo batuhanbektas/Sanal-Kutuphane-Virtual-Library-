@@ -6,7 +6,7 @@ namespace KutuphaneSatis.DTOs.Response.OrderResponse
     {
         public DateOnly OrderTime { get; set; }
 
-
+        public int UserId { get; set; }
         public decimal TotalPrice { get; set; }
 
 

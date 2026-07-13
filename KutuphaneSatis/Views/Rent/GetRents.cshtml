@@ -1,0 +1,53 @@
+﻿@model List<KutuphaneSatis.DTOs.Response.RentResponse.RentalHistoryResponse>
+
+@{
+    ViewData["Title"] = "Kiraladıklarım";
+}
+
+<div class="container mt-5">
+    <h2><i class="bi bi-journal-bookmark-fill"></i> Kiralama Geçmişim</h2>
+    <hr />
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info shadow-sm">
+            Henüz bir kitap kiralamadınız. Kütüphanemizi keşfetmeye ne dersiniz?
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover mt-3 shadow-sm">
+            <thead class="table-primary">
+                <tr>
+                    <th>İşlem No</th>
+                    <th>Başlangıç Tarihi</th>
+                    <th>Bitiş (Teslim) Tarihi</th>
+                    <th>Toplam Tutar</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rent in Model)
+                {
+                    <tr>
+                        <td class="align-middle fw-bold">#@rent.RentalId</td>
+                        <td class="align-middle">@rent.RStartTime.ToString("dd.MM.yyyy")</td>
+                        <td class="align-middle">
+                            @{
+                                // Bitiş tarihi boş değilse göster, boşsa tire (-) koy
+                                var bitisTarihi = rent.REndTime != DateOnly.MinValue ? rent.REndTime.ToString("dd.MM.yyyy") : "-";
+                            }
+                            @bitisTarihi
+                        </td>
+                        <td class="align-middle"><span class="badge bg-success fs-6">@rent.TotalPrice ₺</span></td>
+                        <td class="align-middle">
+                            <a asp-controller="Rent" asp-action="GetRentalDetails" asp-route-id="@rent.RentalId" class="btn btn-sm btn-outline-primary">
+                                Detayları Gör
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

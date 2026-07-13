@@ -42,6 +42,13 @@
                                     <input type="number" name="newQuantity" value="@item.Quantity" min="1" class="form-control form-control-sm me-2" />
                                     <button type="submit" class="btn btn-sm btn-success">Yenile</button>
                                 </form>
+
+                                <form asp-controller="Cart" asp-action="RemoveItem" method="post" style="display:inline;">
+                                    <input type="hidden" name="cartDetailId" value="@item.cartitemid" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        sepetten cikar
+                                    </button>
+                                </form>
                             </td>
 
                             <td>@item.UnitPrice.ToString("C")</td>
@@ -63,7 +70,13 @@
 
                 <h4 class="mb-0 text-success">Genel Toplam: @Model.TotalPrice.ToString("C")</h4>
 
-                <button class="btn btn-primary btn-lg">Satın Al</button>
+                <form asp-controller="Cart" asp-action="CreateOrder" method="post">
+                    <button type="submit" class="btn btn-primary btn-lg">Satın Al</button>
+                </form>
+                <form asp-controller="Cart" asp-action="CreateRent" method="post">
+                    <button type="submit" class="btn btn-primary btn-lg">Kirala</button>
+                </form>
+
             </div>
         </div>
     }

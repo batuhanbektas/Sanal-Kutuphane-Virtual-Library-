@@ -11,5 +11,10 @@ namespace KutuphaneSatis.DTOs.Request.OrderRequest
 
         public List<OrderItemRequest> OrderBooks { get; set; }
 
+        public decimal TotalPrice { get; set; }
+
+
+
+
     }
 }

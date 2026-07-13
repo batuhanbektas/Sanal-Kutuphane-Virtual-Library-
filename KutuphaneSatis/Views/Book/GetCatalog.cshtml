@@ -55,12 +55,22 @@
                                 Sil
                             </button>
                         </form>
-                        <form asp-controller="Cart" asp-action="AddItemCart" method="post" style="display:inline;">
-                            <input type="hidden" name="bookId" value="@book.BookId" />
-                            <button type="submit" class="btn btn-success btn-sm">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="Cart" asp-action="AddItemCart" method="post" style="display:inline;">
+                                <input type="hidden" name="bookId" value="@book.BookId" />
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Sepete Ekle
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-controller="User" asp-action="Login" class="btn btn-success btn-sm">
                                 Sepete Ekle
-                            </button>
-                        </form>
+                            </a>
+
+                        }
                     </td>
                 </tr>
             }

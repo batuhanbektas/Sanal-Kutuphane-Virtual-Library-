@@ -5,5 +5,7 @@
         public int UserId { get; set; }
 
         public List<RentItemRequest> RentBooks { get; set; }
+
+        public decimal TotalPrice { get; set; }
     }
 }

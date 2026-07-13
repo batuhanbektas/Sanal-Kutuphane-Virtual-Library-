@@ -21,7 +21,9 @@ namespace KutuphaneSatis.Models.Concrete
 
         public int RentalQuantity    { get; set; } = 0;
 
-        public double UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
+
+        public string BookName  { get; set; }
 
     }
 }
