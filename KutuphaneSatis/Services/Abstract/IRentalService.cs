@@ -10,6 +10,8 @@ namespace KutuphaneSatis.Services.Abstract
 
         public RentalDetailResponse GetRentDetails(int id);
 
+        public void ReturnRent(int rentbookid, int quantity);
 
+        public void DeleteRent(int rentid);
     }
 }

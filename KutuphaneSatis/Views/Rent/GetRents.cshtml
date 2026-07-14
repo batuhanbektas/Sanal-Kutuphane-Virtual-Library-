@@ -40,10 +40,22 @@
                             @bitisTarihi
                         </td>
                         <td class="align-middle"><span class="badge bg-success fs-6">@rent.TotalPrice ₺</span></td>
+
                         <td class="align-middle">
-                            <a asp-controller="Rent" asp-action="GetRentalDetails" asp-route-id="@rent.RentalId" class="btn btn-sm btn-outline-primary">
-                                Detayları Gör
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Rent" asp-action="GetRentalDetails" asp-route-id="@rent.RentalId" class="btn btn-sm btn-outline-primary">
+                                    Detayları Gör
+                                </a>
+
+                                <form asp-controller="Rent" asp-action="DeleteRent" method="post">
+                                    <input type="hidden" name="rentId" value="@rent.RentalId" />
+
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Bu kiralama kaydını tamamen silmek istediğinize emin misiniz?');">
+                                        <i class="bi bi-trash"></i> Sil
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 }

@@ -14,7 +14,6 @@ namespace KutuphaneSatis.Repositories.Abstract
         public void Create(T entity);
         public void Update(T entity);
 
-     
-
+        public void DeleteHard(int id);
     }
 }

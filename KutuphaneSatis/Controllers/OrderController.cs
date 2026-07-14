@@ -34,7 +34,7 @@ namespace KutuphaneSatis.Controllers
             return View(orders);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public IActionResult GetOrderDetails(int id)
         {
             var orderdetails = _orderService.GetOrderDetails(id);

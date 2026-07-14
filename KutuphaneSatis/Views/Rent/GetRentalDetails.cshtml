@@ -20,7 +20,6 @@
                         <strong>Bitiş Tarihi:</strong>
                         @(Model.REndTime != DateOnly.MinValue ? Model.REndTime.ToString("dd.MM.yyyy") : "Henüz Teslim Edilmedi")
                     </p>
-                    <p class="mb-0"><strong>Kullanıcı ID:</strong> @Model.UserId</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <h4 class="mb-0 mt-3 mt-md-0">Toplam Tutar: <span class="text-success fw-bold">@Model.TotalPrice ₺</span></h4>
@@ -38,6 +37,7 @@
                 <th class="text-center">Süre (Gün)</th>
                 <th class="text-center">Birim Fiyat</th>
                 <th class="text-center">İade Edilen</th>
+                <th class="text-center">İşlem</th>
             </tr>
         </thead>
         <tbody>
@@ -64,13 +64,32 @@
                                 <span class="badge bg-danger">İade Edilmedi (0)</span>
                             }
                         </td>
+
+                        <td class="align-middle text-center">
+                            @if (item.ReturnedQuantitiy < item.RentalQuantity)
+                            {
+                                <form asp-controller="Rent" asp-action="ReturnRents" method="post" class="d-flex justify-content-center align-items-center">
+
+                                    <input type="hidden" name="rentBookId" value="@item.RentalBookId" />
+
+                                    <input type="number" name="quantity" class="form-control form-control-sm me-2"
+                                           style="width: 70px;" min="1" max="@(item.RentalQuantity - item.ReturnedQuantitiy)" value="1" />
+
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">İade Et</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted fw-bold"><i class="bi bi-check2-all"></i> İşlem Tamam</span>
+                            }
+                        </td>
                     </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="5" class="text-center text-muted py-4">Bu işleme ait kitap detayı bulunamadı.</td>
+                    <td colspan="6" class="text-center text-muted py-4">Bu işleme ait kitap detayı bulunamadı.</td>
                 </tr>
             }
         </tbody>

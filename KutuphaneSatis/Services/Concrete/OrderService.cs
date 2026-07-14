@@ -19,8 +19,10 @@ namespace KutuphaneSatis.Services.Concrete
         private readonly ICartRepository _cartRepository;
         private readonly IGenericRepository<OrderBook> _orderbookRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBookRepository _bookRepository;
 
         public OrderService(
+            IBookRepository bookRepository,
             IOrderRepository orderRepository,
             ICartRepository cartRepository,
             IGenericRepository<OrderBook> genericRepository,
@@ -30,6 +32,7 @@ namespace KutuphaneSatis.Services.Concrete
             _cartRepository = cartRepository;
             _orderRepository = orderRepository;
             _userRepository = userRepository;
+            _bookRepository = bookRepository;
         }
 
         public void CreateOrder(int userid)
@@ -48,7 +51,14 @@ namespace KutuphaneSatis.Services.Concrete
                 UnitPrice = Book.Price,
                
             };
-               orderItemRequests.Add(orderitem); 
+               orderItemRequests.Add(orderitem);
+
+                var actualBook = _bookRepository.GetByID(Book.BookId);
+                if (actualBook != null)
+                {
+                    actualBook.Stock -= Book.Quantity; // Kiralanan miktar kadar stoğu azalt
+                    _bookRepository.Update(actualBook); // Veritabanında kitabın yeni stoğunu güncelle
+                }
             }
 
             CreateOrderRequest request = new CreateOrderRequest

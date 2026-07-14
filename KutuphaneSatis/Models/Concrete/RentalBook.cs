@@ -1,4 +1,4 @@
-﻿using KutuphaneSatis.Models.Abstract;
+﻿    using KutuphaneSatis.Models.Abstract;
 
 namespace KutuphaneSatis.Models.Concrete
 {

@@ -16,8 +16,7 @@ namespace KutuphaneSatis.Models.Concrete
 
         public decimal TotalPrice { get; set; }
 
-
-
+        public int totalQuantity { get; set; }
 
         public int UserId { get; set; }
 
