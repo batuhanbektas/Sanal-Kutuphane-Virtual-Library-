@@ -6,7 +6,7 @@ namespace KutuphaneSatis.Services.Abstract
     {
         public List<RentalHistoryResponse> GetRental();
 
-        public void CreateRent(int userid);
+        public bool CreateRent(int userid);
 
         public RentalDetailResponse GetRentDetails(int id);
 

@@ -1,39 +1,40 @@
-﻿using KutuphaneSatis.Models.Abstract;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿    using KutuphaneSatis.Models.Abstract;
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.EntityFrameworkCore;
 
 
-namespace KutuphaneSatis.Models.Concrete
-{
-
-    [Index(nameof(Email), IsUnique = true)]
-    public class User : BaseEntities
+    namespace KutuphaneSatis.Models.Concrete
     {
 
-        public string Name { get; set; }
-        public string Email { get; set; } 
-        public string Surname { get; set; }
-        public string Password { get; set; }
-
-        public int CartId { get; set; }
-
-        public Cart Cart { get; set; }
-
-
-        public ICollection<Order>? Orders { get; set; } = null;
-
-        public ICollection<Rental>? Rents { get; set; } = null;
-
-
-        public User() 
+        [Index(nameof(Email), IsUnique = true)]
+        public class User : BaseEntities
         {
-            bool IsAdmin = false;
 
-            bool IsActive = true;
+            public string Name { get; set; }
+            public string Email { get; set; } 
+            public string Surname { get; set; }
+            public string Password { get; set; }
+
+            public int CartId { get; set; }
+
+            public Cart Cart { get; set; }
+
+            public bool IsAdmin { get; set; } = false;
+
+            public bool IsActive { get; set; } = true;
+
+            public ICollection<Order>? Orders { get; set; } = null;
+
+            public ICollection<Rental>? Rents { get; set; } = null;
+
+
+            public User() 
+            {
+                
+
+            }
+
+
 
         }
-
-
-
     }
-}

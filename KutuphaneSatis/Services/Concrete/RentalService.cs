@@ -35,12 +35,12 @@ namespace KutuphaneSatis.Services.Concrete
             _bookRepository = bookRepository;
         }
 
-        public void CreateRent(int userid)
+        public bool CreateRent(int userid)
         {
             var user = _userRepository.GetByID(userid);
             var cart = _cartRepository.GetByID(user.CartId);
 
-            if (cart.totalQuantity > 3) { throw new Exception("3'ten fazla kiralama yapamazsiniz"); }
+            if (cart.totalQuantity > 3) { return false; }
 
                 var cartDetails = _cartRepository.GetCartDetails(user.CartId);
             List<RentItemRequest> rentItemRequests = new List<RentItemRequest>();
@@ -107,7 +107,7 @@ namespace KutuphaneSatis.Services.Concrete
             cart.CartDetail.Clear();
 
             _rentalRepository.Create(rent);
-
+            return true;
 
         }
 
@@ -121,9 +121,9 @@ namespace KutuphaneSatis.Services.Concrete
             // 2. ÇÖZÜM BURADA: Bu siparişe (id) ait olan kitapları OrderBook tablosundan çekiyoruz
             var siparisinKitaplari = _rentalbookRepository.GetAll().Where(x => x.RentalId == id).ToList();
             
-            var start = DateOnly.FromDateTime(DateTime.Now);
-            var bitis = DateOnly.FromDateTime(DateTime.Now.AddDays(7));
-
+            var bugun = DateOnly.FromDateTime(DateTime.Now);
+            var bitis = rent.REndTime;
+            
             // 3. DTO'yu dolduruyoruz
             RentalDetailResponse rentalDetailResponse = new RentalDetailResponse()
             {
@@ -140,7 +140,7 @@ namespace KutuphaneSatis.Services.Concrete
 
                     BookId = item.BookId,
                     BookName = item.BookName,
-                    RentalDurationDays = item.RentalDurationDays,
+                    RentalDurationDays =  bitis.DayNumber - bugun.DayNumber,
                     RentalId = item.RentalId,
                     RentalQuantity = item.RentalQuantity,
                     ReturnedQuantitiy = item.ReturnedQuantitiy,

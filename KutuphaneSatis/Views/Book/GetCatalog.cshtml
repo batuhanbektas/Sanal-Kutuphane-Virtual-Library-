@@ -2,11 +2,13 @@
 
 <h2>Sanal Kütüphane - Kitap Kataloğu</h2>
 <hr />
-
 <div class="d-flex justify-content-between mb-3">
     <div>
-        <a href="/api/Book/AddBook" class="btn btn-success">+ Yeni Kitap Ekle</a>
-        <a href="/api/Book/RemoveBook" class="btn btn-warning">Toplu Silme Paneli</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="/api/Book/AddBook" class="btn btn-success">+ Yeni Kitap Ekle</a>
+            <a href="/api/Book/RemoveBook" class="btn btn-warning">Toplu Silme Paneli</a>
+        }
     </div>
 
     <form action="/api/Book/GetCatalog" method="get" class="d-flex">
@@ -47,14 +49,18 @@
                     <td>
                         <a href="/api/Book/@book.BookId" class="btn btn-info btn-sm">Detayları Gör</a>
 
-                        <a href="/api/Book/EditBook/@book.BookId" class="btn btn-warning btn-sm text-dark">Düzenle</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/api/Book/EditBook/@book.BookId" class="btn btn-warning btn-sm text-dark">Düzenle</a>
 
-                        <form method="post" action="/api/Book/RemoveBook" style="display:inline;">
-                            <input type="hidden" name="bookId" value="@book.BookId" />
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
-                                Sil
-                            </button>
-                        </form>
+                            <form method="post" action="/api/Book/RemoveBook" style="display:inline;">
+                                <input type="hidden" name="bookId" value="@book.BookId" />
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
+                                    Sil
+                                </button>
+                            </form>
+                        }
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <form asp-controller="Cart" asp-action="AddItemCart" method="post" style="display:inline;">
@@ -69,7 +75,6 @@
                             <a asp-controller="User" asp-action="Login" class="btn btn-success btn-sm">
                                 Sepete Ekle
                             </a>
-
                         }
                     </td>
                 </tr>
