@@ -13,7 +13,7 @@ namespace KutuphaneSatis.Repositories.Concrete
         public BookRepository(AppDbContext context) : base(context) { }
 
         // Repository içindeki metodun şu şekilde görünmeli:
-        public List<Book> GetBooksByCategory(int categoryId)
+        public List<Book> GetBooksByCategory(int categoryId) 
         {
             return _dbSet
                 .Include(b => b.Category) // Kategori verisini de beraberinde getir!

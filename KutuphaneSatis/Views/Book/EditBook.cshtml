@@ -1,88 +1,80 @@
 ﻿@model KutuphaneSatis.DTOs.Response.BookResponse.BookDetailResponse
-
-
 @{
     ViewData["Title"] = "Kitap Düzenle";
 }
-
-<div class="container mt-4">
-    <h2>Kitap Düzenle: @Model.Name</h2>
-    <hr />
-
-    <div class="row">
-        <div class="col-md-6">
-            <form action="/api/Book/EditBook" method="post">
-                
-                <input type="hidden" name="ID" value="@Model.ID" />
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Kitap Adı</label>
-                    <input type="text" class="form-control" name="Name" value="@Model.Name" required />
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark py-4 rounded-top-4">
+                    <h4 class="mb-0 fw-bold text-center">Kitap Düzenle: @Model.Name</h4>
                 </div>
+                <div class="card-body p-5 bg-white">
+                    <form action="/api/Book/EditBook" method="post">
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Yazar Adı</label>
-                    <input type="text" class="form-control" name="AuthorName" value="@Model.AuthorName" required />
-                </div>
+                        <input type="hidden" name="ID" value="@Model.ID" />
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Açıklama</label>
-                    <textarea class="form-control" name="Description" rows="4">@Model.Description</textarea>
-                </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary">Kitap Adı</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm" name="Name" value="@Model.Name" required />
+                        </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Fiyat (₺)</label>
-                        <input type="number" step="0.01" class="form-control" name="Price" value="@Model.Price.ToString("0.00").Replace(',','.')" required />
-                    </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary">Yazar Adı</label>
+                            <input type="text" class="form-control bg-light border-0 shadow-sm" name="AuthorName" value="@Model.AuthorName" required />
+                        </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Stok Adedi</label>
-                        <input type="number" class="form-control" name="Stock" value="@Model.Stock" required />
-                    </div>
-                </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary">Açıklama</label>
+                            <textarea class="form-control bg-light border-0 shadow-sm" name="Description" rows="4">@Model.Description</textarea>
+                        </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Sayfa Sayısı</label>
-                        <input type="number" class="form-control" name="PageNumber" value="@Model.PageNumber" required />
-                    </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold text-secondary">Fiyat (₺)</label>
+                                <input type="number" step="0.01" class="form-control bg-light border-0 shadow-sm" name="Price" value="@Model.Price.ToString("0.00").Replace(',', '.')" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold text-secondary">Stok Adedi</label>
+                                <input type="number" class="form-control bg-light border-0 shadow-sm" name="Stock" value="@Model.Stock" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold text-secondary">Sayfa Sayısı</label>
+                                <input type="number" class="form-control bg-light border-0 shadow-sm" name="PageNumber" value="@Model.PageNumber" required />
+                            </div>
+                        </div>
 
-                        <div class="mb-3">
-    <label for="CategoryId" class="form-label fw-bold">Kategori Seçiniz</label>
-    <div class="input-group">
-        <!-- name="CategoryId" diyerek DTO'daki özellik ile köprü kuruyoruz -->
-                            <select name="CategoryId" class="form-select" required>
-                                <option value="">Lütfen bir kategori seçin...</option>
-                                @if (ViewBag.Categories != null)
-                                {
-                                    foreach (var category in ViewBag.Categories)
+                        <div class="mb-5">
+                            <label class="form-label fw-bold text-secondary">Kategori Seçiniz</label>
+                            <div class="input-group shadow-sm rounded-3">
+                                <select name="CategoryId" class="form-select bg-light border-0" required>
+                                    <option value="">Lütfen bir kategori seçin...</option>
+                                    @if (ViewBag.Categories != null)
                                     {
-                                        if (category.Id == Model.CategoryId)
+                                        foreach (var category in ViewBag.Categories)
                                         {
-                                            <!-- ID'ler eşleşiyorsa, 'selected' özelliğine sahip etiketi basıyoruz -->
-                                            <option value="@category.Id" selected>@category.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <!-- Eşleşmiyorsa standart etiketi basıyoruz -->
-                                            <option value="@category.Id">@category.Name</option>
+                                            if (category.Id == Model.CategoryId)
+                                            {
+                                                <option value="@category.Id" selected>@category.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@category.Id">@category.Name</option>
+                                            }
                                         }
                                     }
-                                }
-                            </select>
-        <a href="/api/Category/ManageCategory" class="btn btn-outline-primary" title="Yeni Kategori Ekle">
-            Kategoriler
-        </a>
-    </div>
-</div>
-                </div>
+                                </select>
+                                <a href="/api/Category/ManageCategory" class="btn btn-warning fw-bold px-4 text-dark">Kategoriler</a>
+                            </div>
+                        </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-success px-4">Kaydet</button>
-                    <a href="/api/Book/GetCatalog" class="btn btn-secondary px-4 ms-2">İptal</a>
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/api/Book/GetCatalog" class="btn btn-secondary px-5 py-2 fw-semibold shadow-sm rounded-pill">İptal</a>
+                            <button type="submit" class="btn btn-warning px-5 py-2 fw-bold shadow-sm rounded-pill text-dark">Değişiklikleri Kaydet</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

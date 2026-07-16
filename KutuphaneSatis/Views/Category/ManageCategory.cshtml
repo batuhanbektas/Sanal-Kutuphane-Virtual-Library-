@@ -1,77 +1,72 @@
 ﻿@model KutuphaneSatis.DTOs.Request.CategoryRequest.CreateCategoryRequest
-
 @{
     ViewData["Title"] = "Kategori Yönetimi";
 }
-
-<div class="container mt-5">
-    
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center mb-5">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">Yeni Kategori Ekle</h4>
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white py-4 rounded-top-4">
+                    <h4 class="mb-0 fw-bold text-center">Yeni Kategori Ekle</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-5 bg-white">
                     <form action="/api/Category/AddCategory" method="post">
-                        
-                        <div class="mb-3">
-                            <label for="CatName" class="form-label">Kategori Adı</label>
-                            <input type="text" class="form-control" id="CatName" name="CatName" placeholder="Örn: Bilim Kurgu, Felsefe" required />
+                        <div class="mb-4">
+                            <label for="CatName" class="form-label fw-bold text-secondary">Kategori Adı</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm" id="CatName" name="CatName" placeholder="Örn: Bilim Kurgu, Felsefe" required />
                         </div>
-
-                        <div class="mb-3">
-                            <label for="Description" class="form-label">Açıklama</label>
-                            <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="Kategori hakkında kısa bir açıklama giriniz..." required></textarea>
+                        <div class="mb-4">
+                            <label for="Description" class="form-label fw-bold text-secondary">Açıklama</label>
+                            <textarea class="form-control bg-light border-0 shadow-sm" id="Description" name="Description" rows="4" placeholder="Kategori hakkında kısa bir açıklama giriniz..." required></textarea>
                         </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="/api/Book/GetCatalog" class="btn btn-secondary me-md-2">İptal</a>
-                            <button type="submit" class="btn btn-success">Kategoriyi Kaydet</button>
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/api/Book/GetCatalog" class="btn btn-secondary px-5 py-2 fw-semibold shadow-sm rounded-pill">İptal</a>
+                            <button type="submit" class="btn btn-success px-5 py-2 fw-bold shadow-sm rounded-pill">Kategoriyi Kaydet</button>
                         </div>
-                        
-                    </form> 
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h5 class="mb-3">Mevcut Kategoriler</h5>
-            <table class="table border table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Kategori Adı</th>
-                        <th>Kategori Açıklaması</th>
-                        <th>İşlem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Categories != null)
-                    {
-                        @foreach (var category in ViewBag.Categories)
+        <div class="col-lg-10">
+            <h3 class="mb-4 fw-bold text-primary border-bottom pb-2">Mevcut Kategoriler</h3>
+            <div class="table-responsive shadow-sm rounded-4 border">
+                <table class="table table-hover align-middle mb-0 bg-white">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-3 px-4">Kategori Adı</th>
+                            <th class="py-3">Kategori Açıklaması</th>
+                            <th class="py-3 text-center px-4">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Categories != null)
+                        {
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-dark px-4 fs-5">@category.Name</td>
+                                    <td class="text-muted fw-semibold">@category.Description</td>
+                                    <td class="text-center px-4">
+                                        <form method="post" action="/api/Category/RemoveCategory">
+                                            <input type="hidden" name="id" value="@category.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm shadow-sm fw-bold px-4 py-2 rounded-pill">Sil</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
                         {
                             <tr>
-                                <td>@category.Name</td>
-                                <td>@category.Description</td>
-                                <td>
-                                    <form method="post" action="/api/Category/RemoveCategory" style="display:inline;">
-                                        <input type="hidden" name="id" value="@category.Id" />
-                                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
-                                    </form>
-                                </td>
+                                <td colspan="3" class="text-center py-5 text-muted fw-bold fs-5 bg-light">Kayıtlı kategori bulunamadı.</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">Kayıtlı kategori bulunamadı.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

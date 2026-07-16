@@ -1,4 +1,19 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.addEventListener("DOMContentLoaded", function () {
 
-// Write your JavaScript code.
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function (alert) {
+        setTimeout(function () {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 4000);
+    });
+
+    var addToCartButtons = document.querySelectorAll('form[action*="AddItemCart"] button[type="submit"]');
+    addToCartButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            this.innerHTML = 'Eklendi!';
+            this.classList.replace('btn-success', 'btn-secondary');
+        });
+    });
+
+});

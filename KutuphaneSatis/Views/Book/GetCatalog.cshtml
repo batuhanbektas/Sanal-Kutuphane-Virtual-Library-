@@ -1,90 +1,86 @@
 ﻿@model List<KutuphaneSatis.DTOs.Response.BookResponse.BookListItemResponse>
-
-<h2>Sanal Kütüphane - Kitap Kataloğu</h2>
-<hr />
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        @if (User.IsInRole("Admin"))
-        {
-            <a href="/api/Book/AddBook" class="btn btn-success">+ Yeni Kitap Ekle</a>
-            <a href="/api/Book/RemoveBook" class="btn btn-warning">Toplu Silme Paneli</a>
-        }
+<div class="container mt-4 mb-5">
+    <h2 class="text-primary fw-bold mb-3">Sanal Kütüphane - Kitap Kataloğu</h2>
+    <hr class="mb-4" />
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-light p-3 rounded-3 shadow-sm border">
+        <div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="/api/Book/AddBook" class="btn btn-success fw-semibold shadow-sm me-2">+ Yeni Kitap Ekle</a>
+                <a href="/api/Book/RemoveBook" class="btn btn-warning fw-semibold shadow-sm text-dark">Toplu Silme Paneli</a>
+            }
+        </div>
+        <form action="/api/Book/GetCatalog" method="get" class="d-flex align-items-center">
+            <select name="categoryId" class="form-select me-2 shadow-sm bg-white">
+                <option value="">Tüm Kategoriler</option>
+                @if (ViewBag.Categories != null)
+                {
+                    foreach (var cat in ViewBag.Categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary shadow-sm px-4 fw-semibold">Filtrele</button>
+        </form>
     </div>
 
-    <form action="/api/Book/GetCatalog" method="get" class="d-flex">
-        <select name="categoryId" class="form-select me-2">
-            <option value="">Tüm Kategoriler</option>
-            @if (ViewBag.Categories != null)
-            {
-                foreach (var cat in ViewBag.Categories)
-                {
-                    <option value="@cat.Id">@cat.Name</option>
-                }
-            }
-        </select>
-        <button type="submit" class="btn btn-primary">Filtrele</button>
-    </form>
-</div>
-
-<table class="table border">
-    <thead>
-        <tr>
-            <th>Kitap Adı</th>
-            <th>Fiyat</th>
-            <th>Stok Adedi</th>
-            <th>Kategori</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var book in Model)
-            {
+    <div class="table-responsive shadow-sm rounded-3 border">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
+            <thead class="table-dark">
                 <tr>
-                    <td>@book.Name</td>
-                    <td>@book.Price ₺</td>
-                    <td>@book.Stock</td>
-                    <td>@book.CatName</td>
-                    <td>
-                        <a href="/api/Book/@book.BookId" class="btn btn-info btn-sm">Detayları Gör</a>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a href="/api/Book/EditBook/@book.BookId" class="btn btn-warning btn-sm text-dark">Düzenle</a>
-
-                            <form method="post" action="/api/Book/RemoveBook" style="display:inline;">
-                                <input type="hidden" name="bookId" value="@book.BookId" />
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
-                                    Sil
-                                </button>
-                            </form>
-                        }
-
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <form asp-controller="Cart" asp-action="AddItemCart" method="post" style="display:inline;">
-                                <input type="hidden" name="bookId" value="@book.BookId" />
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    Sepete Ekle
-                                </button>
-                            </form>
-                        }
-                        else
-                        {
-                            <a asp-controller="User" asp-action="Login" class="btn btn-success btn-sm">
-                                Sepete Ekle
-                            </a>
-                        }
-                    </td>
+                    <th class="py-3 px-3">Kitap Adı</th>
+                    <th class="py-3">Fiyat</th>
+                    <th class="py-3">Stok Adedi</th>
+                    <th class="py-3">Kategori</th>
+                    <th class="py-3 text-center">İşlemler</th>
                 </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="5" class="text-center">Henüz kayıtlı kitap bulunamadı.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold px-3">@book.Name</td>
+                            <td><span class="badge bg-success fs-6 shadow-sm">@book.Price ₺</span></td>
+                            <td><span class="badge bg-secondary fs-6 shadow-sm">@book.Stock</span></td>
+                            <td class="text-muted fw-semibold">@book.CatName</td>
+                            <td class="text-center">
+                                <a href="/api/Book/@book.BookId" class="btn btn-info btn-sm text-white shadow-sm fw-semibold px-3">Detaylar</a>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a href="/api/Book/EditBook/@book.BookId" class="btn btn-warning btn-sm text-dark shadow-sm fw-semibold px-3 mx-1">Düzenle</a>
+
+                                    <form method="post" action="/api/Book/RemoveBook" class="d-inline">
+                                        <input type="hidden" name="bookId" value="@book.BookId" />
+                                        <button type="submit" class="btn btn-danger btn-sm shadow-sm fw-semibold px-3 me-1" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">Sil</button>
+                                    </form>
+                                }
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <form asp-controller="Cart" asp-action="AddItemCart" method="post" class="d-inline">
+                                        <input type="hidden" name="bookId" value="@book.BookId" />
+                                        <button type="submit" class="btn btn-success btn-sm shadow-sm fw-semibold px-3">Sepete Ekle</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="User" asp-action="Login" class="btn btn-success btn-sm shadow-sm fw-semibold px-3">Sepete Ekle</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted fw-semibold">Henüz kayıtlı kitap bulunamadı.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,34 +1,43 @@
 ﻿@model KutuphaneSatis.DTOs.Response.BookResponse.BookDetailResponse
-
 @{
     ViewData["Title"] = Model.Name + " - Kitap Detayı";
 }
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">@Model.Name</h2>
+<div class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white py-3 rounded-top-4 d-flex justify-content-between align-items-center">
+            <h3 class="mb-0 fw-bold">@Model.Name</h3>
+            <span class="badge bg-light text-primary fs-6 shadow-sm">@Model.CatName</span>
         </div>
-        <div class="card-body">
+        <div class="card-body p-5">
             <div class="row">
                 <div class="col-md-8">
-                    <h4>Kitap Bilgileri</h4>
-                    <hr />
-                    <p><strong>Yazar:</strong> @Model.AuthorName</p>
-                    <p><strong>Kategori:</strong> @Model.CatName</p>
-                    <p><strong>Stok Adedi:</strong> @Model.Stock</p>
-                    <p><strong>Aciklamasi:</strong> @Model.Description</p>
-                    <p class="text-success" style="font-size: 1.2rem;">
-                        <strong>Fiyat:</strong> @Model.Price ₺
+                    <h5 class="text-secondary fw-bold border-bottom pb-2 mb-4">Kitap Bilgileri</h5>
+                    <p class="fs-5"><strong class="text-dark">Yazar:</strong> @Model.AuthorName</p>
+                    <p class="fs-5">
+                        <strong class="text-dark">Stok Durumu:</strong>
+                        @if (Model.Stock > 0)
+                        {
+                            <span class="badge bg-success shadow-sm px-3 py-2">Stokta Var (@Model.Stock Adet)</span>
+                        }
+                        else
+                        {
+
+                            <span class="badge bg-danger shadow-sm px-3 py-2">Tükendi</span>
+                        }
                     </p>
+                    <p class="fs-6 text-muted mt-4"><strong>Açıklama:</strong><br />@Model.Description</p>
+                </div>
+                <div class="col-md-4 d-flex flex-column justify-content-center align-items-end border-start ps-4">
+                    <span class="text-muted fw-semibold mb-1">Satış Fiyatı</span>
+                    <h2 class="text-success fw-bold display-5 mb-4">@Model.Price ₺</h2>
                 </div>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="/api/Book/GetCatalog" class="btn btn-secondary">Kataloğa Dön</a>
-
-            <div>
-                <button class="btn btn-warning">Kirala</button>
-                <button class="btn btn-success">Satın Al</button>
+        <div class="card-footer bg-light p-4 rounded-bottom-4 d-flex justify-content-between align-items-center border-0">
+            <a href="/api/Book/GetCatalog" class="btn btn-secondary px-5 py-2 fw-semibold shadow-sm rounded-pill">Kataloğa Dön</a>
+            <div class="d-flex gap-3">
+                <button class="btn btn-warning px-5 py-2 fw-bold shadow-sm rounded-pill text-dark">Kirala</button>
+                <button class="btn btn-success px-5 py-2 fw-bold shadow-sm rounded-pill">Satın Al</button>
             </div>
         </div>
     </div>

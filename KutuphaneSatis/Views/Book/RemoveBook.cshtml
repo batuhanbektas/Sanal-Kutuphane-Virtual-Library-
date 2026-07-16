@@ -1,51 +1,51 @@
 ﻿@model List<KutuphaneSatis.DTOs.Response.BookResponse.BookListItemResponse>
+<div class="container mt-4 mb-5">
+    <h2 class="text-danger fw-bold mb-3">Sanal Kütüphane - Kitap Silme Paneli</h2>
+    <hr class="mb-4" />
+    <div class="mb-4">
+        <a href="/api/Book/GetCatalog" class="btn btn-secondary shadow-sm px-4 fw-semibold">< Kataloğa Geri Dön</a>
+    </div>
 
-<h2>Sanal Kütüphane - Kitap Silme Paneli</h2>
-<hr />
-
-<a href="/api/Book/GetCatalog" class="btn btn-secondary mb-3">Kataloğa Geri Dön</a>
-
-<table class="table border table-hover">
-    <thead>
-        <tr>
-            <th>Kitap Adı</th>
-            <th>Fiyat</th>
-            <th>Stok Adedi</th>
-            <th>Kategori</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var book in Model)
-            {
+    <div class="table-responsive shadow-lg rounded-3 border-danger border-top border-4">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="table-dark">
                 <tr>
-                    <td class="align-middle">@book.Name</td>
-                    <td class="align-middle">@book.Price ₺</td>
-                    <td class="align-middle">@book.Stock</td>
-                    <td class="align-middle">@book.CatName</td>
-                    <td class="align-middle">
-                        
-                        <form method="post" action="/api/Book/RemoveBook">
-                            
-                            <input type="hidden" name="bookId" value="@book.BookId" />
-                            
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('@book.Name adlı kitabı veritabanından tamamen silmek istediğinize emin misiniz?');">
-                                Sil
-                            </button>
-                        </form>
-
-                    </td>
+                    <th class="py-3 px-3">Kitap Adı</th>
+                    <th class="py-3">Fiyat</th>
+                    <th class="py-3">Stok Adedi</th>
+                    <th class="py-3">Kategori</th>
+                    <th class="py-3 text-center">İşlem</th>
                 </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="5" class="text-center text-muted">Şu an sistemde silinecek kayıtlı kitap bulunmuyor.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold px-3 text-dark">@book.Name</td>
+                            <td><span class="badge bg-danger fs-6 shadow-sm">@book.Price ₺</span></td>
+                            <td><span class="badge bg-secondary fs-6 shadow-sm">@book.Stock</span></td>
+                            <td class="text-muted fw-semibold">@book.CatName</td>
+                            <td class="text-center">
+                                <form method="post" action="/api/Book/RemoveBook" class="d-inline">
+                                    <input type="hidden" name="bookId" value="@book.BookId" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm fw-bold px-4 py-2"
+                                            onclick="return confirm('@book.Name adlı kitabı veritabanından tamamen silmek istediğinize emin misiniz? (Bu işlem geri alınamaz)');">
+                                        Kalıcı Olarak Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted fw-bold bg-light">Şu an sistemde silinecek kayıtlı kitap bulunmuyor.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,97 +1,92 @@
 ﻿@model KutuphaneSatis.DTOs.Response.RentResponse.RentalDetailResponse
-
 @{
     ViewData["Title"] = "Kiralama Detayı";
 }
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Kiralama İşlemi Detayı</h2>
-        <a asp-controller="Rent" asp-action="GetRents" class="btn btn-secondary">Kiralamalarıma Dön</a>
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary mb-0"><i class="bi bi-journal-check"></i> Kiralama İşlemi Detayı</h2>
+        <a asp-controller="Rent" asp-action="GetRents" class="btn btn-secondary shadow-sm px-4 py-2 fw-semibold rounded-pill">< Kiralamalarıma Dön</a>
     </div>
-    <hr />
+    <hr class="mb-4" />
 
-    <div class="card mb-4 shadow-sm border-primary">
-        <div class="card-body bg-light">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Başlangıç Tarihi:</strong> @Model.RStartTime.ToString("dd.MM.yyyy")</p>
-                    <p class="mb-1">
-                        <strong>Bitiş Tarihi:</strong>
-                        @(Model.REndTime != DateOnly.MinValue ? Model.REndTime.ToString("dd.MM.yyyy") : "Henüz Teslim Edilmedi")
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h4 class="mb-0 mt-3 mt-md-0">Toplam Tutar: <span class="text-success fw-bold">@Model.TotalPrice ₺</span></h4>
-                </div>
+    <div class="card shadow-sm border-0 rounded-4 mb-5">
+        <div class="card-body bg-light p-4 rounded-4 d-flex justify-content-between align-items-center">
+            <div>
+                <p class="mb-1 text-muted fw-semibold">Başlangıç Tarihi</p>
+                <h5 class="fw-bold text-dark mb-3">@Model.RStartTime.ToString("dd.MM.yyyy")</h5>
+
+                <p class="mb-1 text-muted fw-semibold">Bitiş (Teslim) Tarihi</p>
+                <h5 class="fw-bold text-dark mb-0">@(Model.REndTime != DateOnly.MinValue ? Model.REndTime.ToString("dd.MM.yyyy") : "Henüz Teslim Edilmedi")</h5>
+            </div>
+            <div class="text-end border-start ps-4 border-2">
+                <span class="text-muted fw-semibold">Toplam Tutar</span>
+                <h2 class="mb-0 text-success fw-bold mt-1">@Model.TotalPrice ₺</h2>
             </div>
         </div>
     </div>
 
-    <h4 class="mt-4"><i class="bi bi-book"></i> Kiralanan Kitaplar</h4>
-    <table class="table table-bordered mt-3 shadow-sm">
-        <thead class="table-secondary">
-            <tr>
-                <th>Kitap Adı</th>
-                <th class="text-center">Kiralanan Adet</th>
-                <th class="text-center">Süre (Gün)</th>
-                <th class="text-center">Birim Fiyat</th>
-                <th class="text-center">İade Edilen</th>
-                <th class="text-center">İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.RentItem != null && Model.RentItem.Any())
-            {
-                @foreach (var item in Model.RentItem)
+    <h4 class="fw-bold text-secondary mb-3 border-bottom pb-2"><i class="bi bi-book"></i> Kiralanan Kitaplar</h4>
+    <div class="table-responsive shadow-sm rounded-4 border">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3 px-4">Kitap Adı</th>
+                    <th class="py-3 text-center">Kiralanan Adet</th>
+                    <th class="py-3 text-center">Süre (Gün)</th>
+                    <th class="py-3 text-center">Birim Fiyat</th>
+                    <th class="py-3 text-center">İade Durumu</th>
+                    <th class="py-3 text-center px-4">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.RentItem != null && Model.RentItem.Any())
+                {
+                    @foreach (var item in Model.RentItem)
+                    {
+                        <tr>
+                            <td class="fw-semibold px-4 fs-5 text-dark">@item.BookName</td>
+                            <td class="text-center"><span class="badge bg-secondary fs-6 shadow-sm px-3 py-2">@item.RentalQuantity</span></td>
+                            <td class="text-center fw-semibold text-muted">@item.RentalDurationDays Gün</td>
+                            <td class="text-center fw-bold text-success fs-5">@item.UnitPrice ₺</td>
+                            <td class="text-center">
+                                @if (item.ReturnedQuantitiy == item.RentalQuantity)
+                                {
+                                    <span class="badge bg-success shadow-sm px-3 py-2">Tümü İade Edildi (@item.ReturnedQuantitiy)</span>
+                                }
+                                else if (item.ReturnedQuantitiy > 0)
+                                {
+                                    <span class="badge bg-warning text-dark shadow-sm px-3 py-2">Eksik İade (@item.ReturnedQuantitiy)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger shadow-sm px-3 py-2">İade Edilmedi (0)</span>
+                                }
+                            </td>
+                            <td class="text-center px-4">
+                                @if (item.ReturnedQuantitiy < item.RentalQuantity)
+                                {
+                                    <form asp-controller="Rent" asp-action="ReturnRents" method="post" class="d-flex justify-content-center align-items-center gap-2">
+                                        <input type="hidden" name="rentBookId" value="@item.RentalBookId" />
+                                        <input type="number" name="quantity" class="form-control form-control-sm text-center fw-bold border-primary shadow-sm"
+                                               style="width: 70px;" min="1" max="@(item.RentalQuantity - item.ReturnedQuantitiy)" value="1" />
+                                        <button type="submit" class="btn btn-sm btn-primary fw-semibold px-3 shadow-sm">İade Et</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> İşlem Tamam</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td class="align-middle">@item.BookName</td>
-                        <td class="align-middle text-center">@item.RentalQuantity</td>
-                        <td class="align-middle text-center">@item.RentalDurationDays Gün</td>
-                        <td class="align-middle text-center">@item.UnitPrice ₺</td>
-                        <td class="align-middle text-center">
-                            @if (item.ReturnedQuantitiy == item.RentalQuantity)
-                            {
-                                <span class="badge bg-success">Tümü İade Edildi (@item.ReturnedQuantitiy)</span>
-                            }
-                            else if (item.ReturnedQuantitiy > 0)
-                            {
-                                <span class="badge bg-warning text-dark">Eksik İade (@item.ReturnedQuantitiy)</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">İade Edilmedi (0)</span>
-                            }
-                        </td>
-
-                        <td class="align-middle text-center">
-                            @if (item.ReturnedQuantitiy < item.RentalQuantity)
-                            {
-                                <form asp-controller="Rent" asp-action="ReturnRents" method="post" class="d-flex justify-content-center align-items-center">
-
-                                    <input type="hidden" name="rentBookId" value="@item.RentalBookId" />
-
-                                    <input type="number" name="quantity" class="form-control form-control-sm me-2"
-                                           style="width: 70px;" min="1" max="@(item.RentalQuantity - item.ReturnedQuantitiy)" value="1" />
-
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">İade Et</button>
-                                </form>
-                            }
-                            else
-                            {
-                                <span class="text-muted fw-bold"><i class="bi bi-check2-all"></i> İşlem Tamam</span>
-                            }
-                        </td>
+                        <td colspan="6" class="text-center py-5 text-muted fw-bold bg-light">Bu işleme ait kitap detayı bulunamadı.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center text-muted py-4">Bu işleme ait kitap detayı bulunamadı.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

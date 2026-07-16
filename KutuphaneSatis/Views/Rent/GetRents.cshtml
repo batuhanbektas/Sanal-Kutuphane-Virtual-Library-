@@ -1,65 +1,59 @@
 ﻿@model List<KutuphaneSatis.DTOs.Response.RentResponse.RentalHistoryResponse>
-
 @{
     ViewData["Title"] = "Kiraladıklarım";
 }
-
-<div class="container mt-5">
-    <h2><i class="bi bi-journal-bookmark-fill"></i> Kiralama Geçmişim</h2>
-    <hr />
+<div class="container mt-5 mb-5">
+    <h2 class="fw-bold text-primary mb-3"><i class="bi bi-journal-bookmark-fill"></i> Kiralama Geçmişim</h2>
+    <hr class="mb-4" />
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info shadow-sm">
-            Henüz bir kitap kiralamadınız. Kütüphanemizi keşfetmeye ne dersiniz?
+        <div class="alert alert-info shadow-sm border-0 rounded-4 p-5 text-center">
+            <h5 class="fw-bold text-info-emphasis mb-0">Henüz bir kitap kiralamadınız. Kütüphanemizi keşfetmeye ne dersiniz?</h5>
+            <a href="/api/Book/GetCatalog" class="btn btn-primary mt-4 px-4 py-2 rounded-pill fw-semibold shadow-sm">Kataloğa Git</a>
         </div>
     }
     else
     {
-        <table class="table table-hover mt-3 shadow-sm">
-            <thead class="table-primary">
-                <tr>
-                    <th>İşlem No</th>
-                    <th>Başlangıç Tarihi</th>
-                    <th>Bitiş (Teslim) Tarihi</th>
-                    <th>Toplam Tutar</th>
-                    <th>İşlemler</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var rent in Model)
-                {
+        <div class="table-responsive shadow-sm rounded-4 border">
+            <table class="table table-hover align-middle mb-0 bg-white">
+                <thead class="table-dark">
                     <tr>
-                        <td class="align-middle fw-bold">#@rent.RentalId</td>
-                        <td class="align-middle">@rent.RStartTime.ToString("dd.MM.yyyy")</td>
-                        <td class="align-middle">
-                            @{
-                                // Bitiş tarihi boş değilse göster, boşsa tire (-) koy
-                                var bitisTarihi = rent.REndTime != DateOnly.MinValue ? rent.REndTime.ToString("dd.MM.yyyy") : "-";
-                            }
-                            @bitisTarihi
-                        </td>
-                        <td class="align-middle"><span class="badge bg-success fs-6">@rent.TotalPrice ₺</span></td>
-
-                        <td class="align-middle">
-                            <div class="d-flex gap-2">
-                                <a asp-controller="Rent" asp-action="GetRentalDetails" asp-route-id="@rent.RentalId" class="btn btn-sm btn-outline-primary">
-                                    Detayları Gör
-                                </a>
-
-                                <form asp-controller="Rent" asp-action="DeleteRent" method="post">
-                                    <input type="hidden" name="rentId" value="@rent.RentalId" />
-
-                                    <button type="submit" class="btn btn-sm btn-outline-danger"
-                                            onclick="return confirm('Bu kiralama kaydını tamamen silmek istediğinize emin misiniz?');">
-                                        <i class="bi bi-trash"></i> Sil
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                        <th class="py-3 px-4">İşlem No</th>
+                        <th class="py-3">Başlangıç Tarihi</th>
+                        <th class="py-3">Bitiş (Teslim) Tarihi</th>
+                        <th class="py-3 text-center">Toplam Tutar</th>
+                        <th class="py-3 text-center px-4">İşlemler</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var rent in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold px-4 fs-5 text-secondary">#@rent.RentalId</td>
+                            <td class="fw-semibold text-dark">@rent.RStartTime.ToString("dd.MM.yyyy")</td>
+                            <td class="fw-semibold text-muted">
+                                @(rent.REndTime != DateOnly.MinValue ? rent.REndTime.ToString("dd.MM.yyyy") : "-")
+                            </td>
+                            <td class="text-center"><span class="badge bg-success fs-5 shadow-sm px-3 py-2">@rent.TotalPrice ₺</span></td>
+                            <td class="text-center px-4">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-controller="Rent" asp-action="GetRentalDetails" asp-route-id="@rent.RentalId" class="btn btn-sm btn-outline-primary fw-bold shadow-sm px-3 py-2 rounded-pill">
+                                        Detayları Gör
+                                    </a>
+                                    <form asp-controller="Rent" asp-action="DeleteRent" method="post">
+                                        <input type="hidden" name="rentId" value="@rent.RentalId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger fw-bold shadow-sm px-3 py-2 rounded-pill"
+                                                onclick="return confirm('Bu kiralama kaydını tamamen silmek istediğinize emin misiniz?');">
+                                            Sil
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>

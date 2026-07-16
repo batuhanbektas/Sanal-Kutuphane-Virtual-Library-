@@ -1,56 +1,56 @@
 ﻿@model KutuphaneSatis.DTOs.Response.OrderResponse.OrderDetailResponse
-
 @{
     ViewData["Title"] = "Sipariş Detayı";
 }
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Sipariş Detayı</h2>
-        <a asp-controller="Order" asp-action="GetOrders" class="btn btn-secondary">Siparişlerime Dön</a>
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary mb-0"><i class="bi bi-receipt"></i> Sipariş Detayı</h2>
+        <a asp-controller="Order" asp-action="GetOrders" class="btn btn-secondary shadow-sm px-4 py-2 fw-semibold rounded-pill">< Siparişlerime Dön</a>
     </div>
-    <hr />
+    <hr class="mb-4" />
 
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body bg-light">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Sipariş Tarihi:</strong> @Model.OrderTime.ToString("dd.MM.yyyy")</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h4 class="mb-0">Toplam Tutar: <span class="text-success">@Model.TotalPrice ₺</span></h4>
-                </div>
+    <div class="card shadow-sm border-0 rounded-4 mb-5">
+        <div class="card-body bg-light p-4 rounded-4 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted fw-semibold">Sipariş Tarihi</span>
+                <h4 class="fw-bold text-dark mb-0 mt-1">@Model.OrderTime.ToString("dd.MM.yyyy")</h4>
+            </div>
+            <div class="text-end border-start ps-4 border-2">
+                <span class="text-muted fw-semibold">Toplam Ödenen Tutar</span>
+                <h2 class="mb-0 text-success fw-bold mt-1">@Model.TotalPrice ₺</h2>
             </div>
         </div>
     </div>
 
-    <h4>İçerisindeki Kitaplar</h4>
-    <table class="table table-bordered mt-3">
-        <thead class="table-secondary">
-            <tr>
-                <th>Kitap Adı</th>
-                <th>Adet</th>
-                <th>Fiyati</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.OrderItem != null && Model.OrderItem.Any())
-            {
-                @foreach (var item in Model.OrderItem)
+    <h4 class="fw-bold text-secondary mb-3 border-bottom pb-2">İçerisindeki Kitaplar</h4>
+    <div class="table-responsive shadow-sm rounded-4 border">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3 px-4">Kitap Adı</th>
+                    <th class="py-3 text-center">Adet</th>
+                    <th class="py-3 text-end px-4">Birim Fiyatı</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.OrderItem != null && Model.OrderItem.Any())
+                {
+                    @foreach (var item in Model.OrderItem)
+                    {
+                        <tr>
+                            <td class="fw-semibold px-4 fs-5 text-dark">@item.BookName</td>
+                            <td class="text-center"><span class="badge bg-secondary fs-6 shadow-sm px-3 py-2">@item.Quantity</span></td>
+                            <td class="text-end px-4 fw-bold text-success fs-5">@item.UnitPrice ₺</td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@item.BookName</td>
-                        <td>@item.Quantity</td>
-                        <td>@item.UnitPrice</td>
+                        <td colspan="3" class="text-center py-5 text-muted fw-bold bg-light">Sipariş detayı bulunamadı.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="2" class="text-center text-muted">Sipariş detayı bulunamadı.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
